@@ -1,0 +1,32 @@
+.ribbon {
+    background: #ba89b6;
+}
+
+.ribbon:before, .ribbon:after {
+    border: 1.5em solid #986794;
+}
+
+.ribbon .ribbon-content:before, .ribbon .ribbon-content:after {
+
+    border-color: #804f7c transparent transparent transparent;
+}
+
+.inv_table{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 90px;
+}
+
+.table{
+    width: 90%;
+}
+
+.bx{
+    font-size: 23px;
+}
+
+.bxs-trash{
+    color: red;
+}

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name = "description" content = "Bike Parts, Bike Shop, Lapu-Lapu City Bike Shop, Cordova Bike Shop">
+    <meta name = "keyword" content = "BikePro, Bike Pro">
+    <meta name = "author" content = "Clark Mollejon">
+    <title>User Log-in</title>
+    <link rel="stylesheet" href="login.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+    <img src="icons/logo.png" alt="image" class="shop-logo">
+    <div class="wrapper">
+        <form action="" autocomplete="off">
+            <h1>Login</h1>
+            <div class="input-box">
+                <input type="text" class="form-control" placeholder="Username" id="uname" required >
+                <img src="icons/user.png" alt="image">
+                <div class="valid-feedback user-valid">Success!</div>
+                <div class="invalid-feedback user-valid">Error!</div>
+            </div>
+
+            <div class="input-box">
+                <input type="password" class="form-control" id="pword" placeholder="Password" required>
+                <img src="icons/lock.png" alt="image">
+                <div class="invalid-feedback pass-valid" >Error!</div>
+                <div class="valid-feedback pass-valid">Success!</div>
+            </div>
+
+            <select class="form-select mb-3 user-select" required>
+                <option selected disabled value="">Select who is this user</option>
+                <option value="1">Admin</option>
+                <option value="2">LLC Branch Staff</option>
+                <option value="3">Cordova Branch Staff</option>
+            </select>
+
+            <button type="button" class="btn" onclick="validmsg()">Login</button>
+
+            <div class="register-link">
+                <p>Dont't have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Register</a></p>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="exampleModalLabel">REGISTRATION FORM</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="add-form">
+                        <form action="" class="needs-validation" novalidate>
+                            <div class="form-group mb-4">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="firstName" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="phnum" class="form-label">Phone Number</label>
+                                <input type="number" class="form-control" id="phnum" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="male" value="Male" required>
+                                        <label class="form-check-label" for="male">Male</label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="female" value="Female" required>
+                                        <label class="form-check-label" for="female">Female</label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="others" value="Others" required>
+                                        <label class="form-check-label" for="others">Others</label>
+                                      </div>
+                                      <div class="invalid-feedback">Please select gender</div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-2 mt-4">
+                                <label for="Uname" class="form-label">Username</label>
+                                <div class="input-group has-validation">
+                                    <span class="input-group-text" id="inputGroupPrepend">@</span>
+                                    <input type="text" class="form-control" id="Uname"  aria-describedby="inputGroupPrepend" required>
+                                    <div class="invalid-feedback">
+                                        Please choose a username.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="pword">Password</label>
+                                <input type="password" class="form-control" id="pword" required>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="confirm">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirm" required>
+                            </div>
+                            <div class="form-group mt-4 mb-4">
+                                <select class="form-select" required aria-label="select example">
+                                    <option value="">Select who is this user</option>
+                                    <option value="1">Admin</option>
+                                    <option value="2">LLC BRANCH</option>
+                                    <option value="3">CORDOVA BRANCH</option>
+                                  </select>
+                                  <div class="invalid-feedback">Please select a user</div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" >Register</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    
+    <script>
+        var user = document.getElementById("uname");
+        var pass = document.getElementById("pword");
+
+        function validmsg(){
+
+            if(user.value != "Clark Keindrick" && pass.value != "12345"){
+                user.classList.add("is-invalid")
+                pass.classList.add("is-invalid")
+                user.classList.remove("is-valid")
+                pass.classList.remove("is-valid")
+            }
+
+            if(user.value == "Clark Keindrick" && pass.value == "12345"){
+                user.classList.add("is-valid")
+                pass.classList.add("is-valid")
+                user.classList.remove("is-invalid")
+                pass.classList.remove("is-invalid")
+            }
+        }
+
+        var forms = document.querySelectorAll(".needs-validation");
+
+        Array.prototype.slice.call(forms).forEach(function(form)
+        {
+            form.addEventListener("submit", function(event)
+            {
+                if(!form.checkValidity())
+                {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add("was-validated");
+            });
+        });
+
+    </script>
+
+</body>
+</html>
