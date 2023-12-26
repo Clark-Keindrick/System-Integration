@@ -1,0 +1,167 @@
+.home-section {
+    height: 100vh;
+    overflow: auto; /* If the content is taller than the viewport, enable scrolling */
+}
+
+.setting-container {
+    width: 60%;
+    height: 100%;
+    transform: translate(40%, 50px);
+    margin-bottom: 300px;
+    margin-top: 80px;
+    font-size: 14px;
+}
+
+.panel {
+    border: 0;
+    margin-bottom: 20px; /* Adjusted margin-bottom */
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+.panel-primary .panel-heading {
+    color: #fff;
+    background: #337ab7;
+    border-color: #337ab7;
+    font-size: 14px;
+    padding: 10px 15px;
+    border-radius: 3px;
+    margin-top: 100px;
+}
+
+
+.panel-body {
+    padding: 10px;
+}
+
+label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.form-control {
+    border: 1px solid #eee;
+    display: block;
+    width: 100%;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #555;
+    background: #fff;
+    border-radius: 4px;
+}
+
+.panel-danger .panel-heading {
+    color: #a94442;
+    background: #f2dede;
+    border-color: #ebccd1;
+    font: 18px/1 300;
+}
+
+.panel-footer {
+    display: flex;
+    margin: 0 0 10px;
+    background: #fff;
+    border-top: 1px solid #eee;
+    padding: 10px 15px;
+    border-bottom: 3px solid #fff;
+    border-radius: 0 0 3px 3px;
+    align-items: center;
+    text-align: center;
+}
+
+.btn-primary {
+    background: #30a5ff;
+    border-color: #30a5ff;
+    color: #fff;
+    font-size: 14px;
+    height: 50px;
+    width: 80px;
+    margin: auto; /* Center horizontally */
+}
+
+.btn {
+    display: inline-block;
+    padding: 6px 15px;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn-default {
+    background: #30a5ff;
+    border-color: #30a5ff;
+    color: #fff;
+    font-size: 14px;
+    height: 50px;
+    width: 80px;
+    margin: auto; /* Center horizontally */
+}
+
+
+.lblbox {
+    margin-top: 10px;
+}
+
+.btn-primary + .btn-default {
+    margin-left: 10px; 
+}
+
+.btn-success{
+    float: right; 
+    margin-top: 10px;
+}
+
+
+.table {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: block;
+    width: 100%; /* Set width to 100% to make it wider */
+    background-color: white;
+}
+
+.table table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.table table th,
+.table table td {
+    font-size: 12px;
+    padding: 10px;
+}
+
+.table table,
+.table th,
+.table td {
+    text-align: center;
+    border: 1px solid #616161;
+    border-collapse: collapse;
+}
+
+.table tr th {
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.table table tr:first-child {
+    color: #fff;
+    background-color: maroon;
+}
+
+.supplier {
+    font-size: 14px;
+    font-weight: 700;
+    float: left;
+}
+
+.panel-add {
+    float: left;
+    margin-top: 20px;
+}
+

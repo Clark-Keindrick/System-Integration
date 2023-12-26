@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Purchase Order</title>
+  <!-- Link Styles -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/Purchase.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <div class="header">
+    <div class="navbar-header">
+      <ul class="log-status">
+        <li>
+          <p class="last-log"><i class='bx bx-time-five'></i>last login</p>
+          <p class="log-date">24th Nov 2023 04:23</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+<!-- Sidebar -->
+<div class="sidebar">
+  <ul class="nav-list">
+    <li class="logo">
+      <div class="logo_details">
+        <img src="BikePro Pic.png" alt="profile image">
+        <div class="logo_name">BikePro</div>
+        <i class="bx bx-menu" id="btn"></i>
+      </div>
+    </li>
+    <li>
+      <i class="bx bx-search"></i>
+      <input type="text" class="form-control nav-search" placeholder="Search" required="">  
+    </li> 
+    <li>
+      <a href="index.html">
+        <i class="bx bx-grid-alt"></i>
+        <span class="link_name">Dashboard</span>
+      </a>
+      <span class="tooltip">Dashboard</span>
+    </li>
+    <li>
+      <a href="Purchase.html">
+        <i class="bx bx-notepad"></i>
+        <span class="link_name">Purchase Order</span>
+      </a>
+      <span class="tooltip">Purchase Order</span>
+    </li>
+    <li>
+      <a href="inventory.html">
+        <i class="bx bxs-coin-stack"></i>
+        <span class="link_name">Inventory</span>
+      </a>
+      <span class="tooltip">Inventory</span>
+    </li>
+    <li>
+      <a href="supplier.html">
+        <i class="bx bx-user"></i>
+        <span class="link_name">Supplier List</span>
+      </a>
+      <span class="tooltip">Supplier List</span>
+    </li>
+    <li>
+      <a href="invoice.html">
+        <i class="bx bx-receipt"></i>
+        <span class="link_name">Invoice</span>
+      </a>
+      <span class="tooltip">Invoice</span>
+    </li>
+    <li>
+      <a href="trash.html">
+        <i class="bx bxs-trash"></i>
+        <span class="link_name">Trash</span>
+      </a>
+      <span class="tooltip">Trash</span>
+    </li>
+    <li>
+      <a href="user.html">
+        <i class="bx bx-log-out"></i>
+        <span class="link_name">Log-Out</span>
+      </a>
+      <span class="tooltip">Log-Out</span>
+    </li>
+    <li class="profile">
+      <div class="profile_details">
+        <img src="Juls.jpg" alt="profile image">
+        <div class="profile_content">
+          <div class="name">Julie Ann</div>
+          <div class="designation">Admin</div>
+        </div>
+      </div>
+    </li>     
+  </ul>
+</div>
+
+  <section class="home-section">
+    <div class="container"> 
+      <form id="purchaseOrderForm">
+        <div class="purchase_header">
+          <p>Purchase Order Form</p>
+        </div>
+
+          <div class="purchase_text">
+              <label for="supplier">Supplier:</label>
+              <input type="text" class="form-control" id="supplier" required>
+          </div>
+  
+          <div class="purchase_text">
+              <label for="product">Product:</label>
+              <input type="text" class="form-control" id="product" required>
+          </div>
+  
+          <div class="purchase_text">
+              <label for="quantity">Quantity:</label>
+              <input type="number" class="form-control" id="quantity" required>
+          </div>
+  
+          <div class="purchase_text">
+              <label for="price">Price per unit:</label>
+              <input type="number" class="form-control" id="price" required>
+          </div>
+  
+          <div class="purchase_text">
+              <label for="total">Total:</label>
+              <input type="text" class="form-control" id="total" readonly>
+          </div>
+          <br>
+          <button type="button" class="btn btn-primary" onclick="calculateTotal()">Calculate Total</button>
+          <button type="submit" class="btn btn-success">Submit Purchase Order</button>
+      </form>
+  </div>
+  
+  
+  
+ </section>
+
+  
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>

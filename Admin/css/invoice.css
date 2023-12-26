@@ -1,0 +1,157 @@
+.container{
+    height: 100vh;
+    overflow: auto; 
+}
+.invoice-container {
+    display: block;
+    margin-bottom: 300px;
+    margin-top: 40px;    
+    position: relative;
+    font-size: 12px;
+}
+.top-section {
+    color: #fff;
+    padding: 20px;
+    height: 115px;
+    background-color: #6a1b9a;
+}
+.top-section h1{
+    font-size: 30px;
+    margin-bottom: 10px;
+    font-weight: 400;
+}
+.top-section .address{
+    float: left;
+}
+.top-section .contact {
+    float: right;
+}
+.top-section p{
+    font-size: 12px;
+}
+.top-section .address-content{
+    max-width: 275px;
+    font-size: 12px;
+}
+.top-section .contact-content{
+    max-width: 275px;
+    font-size: 12px;
+    float: right;
+    margin-top: 32px;
+}
+.contact-content .number,
+.contact-content .email{
+    font-size: 12px;
+    float: right;
+    display: block;
+}
+.contact-content .email span,
+.contact-content .number span{
+    float: right;
+    margin-left: 30px;
+}
+
+/*----------BILLING INVOICE------------*/
+.billing-invoice {
+    padding: 20px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    position: relative;
+}
+.billing-invoice .title {
+    font-weight: 700;
+    float: left;
+    font-size: 14px;
+}
+.billing-invoice .des{
+    font-weight: 400;
+    float: right;
+    font-size: 12px;
+}
+.des .code {
+    font-weight: 700;
+    font-size: 12px;
+    text-align: right;
+}
+.des .issue{
+    font-weight: 400;
+    font-size: 12px;
+}
+.des .issue span{
+    font-weight: 400;
+    font-size: 12px;
+}
+/*----------------Billing To-------------------------------*/
+.billing-to {
+    padding: 20px;
+    display: block;
+    margin-bottom: 20px;
+}
+.billing-to h1{
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    margin-top: 5px;
+}
+.billed-sec .address-content{
+    float: left;
+    text-align: left;
+}
+.billing-to .Addr-cont {
+    float: right;
+}
+.billing-to p{
+    font-size: 12px;
+}
+.billing-to .address-content{
+    max-width: 275px;
+    font-size: 12px;
+}
+.billing-to .address-content p{
+    text-align: left;
+}
+.billing-to .Addr-cont{
+    max-width: 275px;
+    font-size: 12px;
+    float: right;
+    margin-top: 32px;
+}
+.Addr-cont .title-r{
+    font-size: 14px;
+    padding-right: 60px;
+    font-weight: 700;
+}
+.Addr-cont .ship-add{
+    font-size: 12px;
+    float: right;
+    display: block;
+}
+/*-------------TABLE------------- */
+.table{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding: 0 40px;
+    display: block;
+}
+.table table{
+    width: 100%;
+    margin-top: 100px;
+}
+.table table th,
+.table table td{
+    font-size: 12px;
+}
+.table table, th, td{
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #616161;
+    border-collapse: collapse;
+}
+.table tr th{
+    font-weight: 500;
+    font-size: 16px;
+}
+.table table tr:first-child{
+    color: #fff;
+    background-color: #6a1b9a;
+}

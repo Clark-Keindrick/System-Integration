@@ -1,0 +1,112 @@
+.User_container{
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 200px auto;
+  grid-template-rows: 55px minmax(160px, auto) auto;
+  grid-template-areas: 
+    'header header'
+    'leftbar main'
+    'footer footer';
+  column-gap: 16px;
+  row-gap: 30px;
+}
+
+.page-leftbar {
+  grid-area: leftbar;
+}
+
+.page-main {
+  grid-area: main;
+}
+
+.content {
+  color: #242424;
+  background-color: #f25fff;
+  font-weight: 600;
+  text-align: center;
+  height: 100%;
+  padding: 10px;
+  font-size: 25px;
+}
+
+table>tbody>tr>td>img {
+  display: flex;
+  width: fit-content;
+  height: 250px;
+  border-radius: 50%;
+  margin-left: 197%;
+  position: center;
+  border-color: black;
+  border: 2px solid black;
+}
+
+.user_headertext{
+  font-size: 34px;
+  margin-top: 28px;
+  font-weight: bold;
+  color: black;
+  text-align: left;
+  margin-left: 5%;
+  padding: 2,2,2,2;
+}
+
+.myButton {
+background-color:rgb(58, 164, 199);
+border-radius:5px;
+margin-top: 24px;
+margin: 12px;
+display:inline-block;
+cursor:pointer;
+color:rgb(255, 255, 255);
+font-family:Times New Roman;
+font-size:17px;
+padding:6px 31px;
+text-decoration:none;
+
+  }
+.myButton:hover {
+      background-color:#5cbf2a;
+  }
+
+.myButton:active {
+      position:relative;
+      top:1px;
+  }
+
+  .panel {
+    width: 25%;
+    background-color: rgba(61, 61, 221, 0.849);
+    margin-left: 37.5%;
+    margin-top: 24px;
+    
+}
+
+.panel_body{
+  padding: 5%;
+  border-color: #5cbf2a;
+}
+
+.form-control {
+  border: 1px solid #eee;
+  display: block;
+  width: 100%;
+  padding: 6px 12px;
+  font-size: 14px;
+  color: #555;
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+.lblbox{
+font-size: 20px;
+margin-top: 15px;
+}
+
+.lbltext{
+font-size: 25px;
+font-family: Times New Roman;
+}

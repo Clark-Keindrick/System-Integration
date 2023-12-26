@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>ADMIN</title>
+  <!-- Link Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <div class="header">
+    <div class="navbar-header">
+      <div class="text">Dashboard</div>
+      <ul class="log-status">
+        <li>
+          <p class="last-log"><i class='bx bx-time-five'></i>last login</p>
+          <p class="log-date">24th Nov 2023 04:23</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <ul class="nav-list">
+      <li class="logo">
+        <div class="logo_details">
+          <img src="image/BikePro Pic.png" alt="profile image">
+          <div class="logo_name">BikePro</div>
+          <i class="bx bx-menu" id="btn"></i>
+        </div>
+      </li>
+      <li>
+        <i class="bx bx-search"></i>
+        <input type="text" class="form-control nav-search" placeholder="Search" required="">  
+      </li> 
+      <li>
+        <a href="index.html">
+          <i class="bx bx-grid-alt"></i>
+          <span class="link_name">Dashboard</span>
+        </a>
+        <span class="tooltip">Dashboard</span>
+      </li>
+      <li>
+        <a href="Purchase.html">
+          <i class="bx bx-notepad"></i>
+          <span class="link_name">Purchase Order</span>
+        </a>
+        <span class="tooltip">Purchase Order</span>
+      </li>
+      <li>
+        <a href="inventory.html">
+          <i class="bx bxs-coin-stack"></i>
+          <span class="link_name">Inventory</span>
+        </a>
+        <span class="tooltip">Inventory</span>
+      </li>
+      <li>
+        <a href="supplier.html">
+          <i class="bx bx-user"></i>
+          <span class="link_name">Supplier List</span>
+        </a>
+        <span class="tooltip">Supplier List</span>
+      </li>
+      <li>
+        <a href="invoice.html">
+          <i class="bx bx-receipt"></i>
+          <span class="link_name">Invoice</span>
+        </a>
+        <span class="tooltip">Invoice</span>
+      </li>
+      <li>
+        <a href="trash.html">
+          <i class="bx bxs-trash"></i>
+          <span class="link_name">Trash</span>
+        </a>
+        <span class="tooltip">Trash</span>
+      </li>
+      <li>
+        <a href="user.html">
+          <i class="bx bx-log-out"></i>
+          <span class="link_name">Log-Out</span>
+        </a>
+        <span class="tooltip">Log-Out</span>
+      </li>
+      <li class="profile">
+        <div class="profile_details">
+          <img src="image/Juls.jpg" alt="profile image">
+          <div class="profile_content">
+            <div class="name">Julie Ann</div>
+            <div class="designation">Admin</div>
+          </div>
+        </div>
+      </li>     
+    </ul>
+  </div>
+
+
+  <section class="home-section">
+  
+  <div class="panels">
+    <a href="request-made.html">
+      <div class="panels-container">
+        <div class="panels-icon">
+          <i class='bx bx-edit' style='color:#ffffff'></i>
+        </div>
+        <div class="panels-stats">
+          <div class="panels-stats-box">
+            <p class="stats-num">10</p>
+            <p class="stats-label">Requests</p>
+          </div>
+        </div>
+      </div>
+
+    <a href="sales.html">
+        <div class="panels-container">
+            <div class="panels-icon2">
+                <i class='bx bx-line-chart' style='color:#ffffff'></i>
+            </div>
+            <div class="panels-stats">
+                <div class="panels-stats-box">
+                    <p class="stats-num">&#8369;13,500</p>
+                    <p class="stats-label">Daily Sales</p>
+                </div>
+            </div>
+        </div>
+    </a>
+
+    <div class="panels-container">
+        <div class="panels-icon3">
+            <i class='bx bx-money-withdraw' style='color:#ffffff' ></i>
+        </div>
+        <div class="panels-stats">
+            <div class="panels-stats-box">
+                <p class="stats-num">536</p>
+                <p class="stats-label">Items Sold</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="panels-container" type="button" id="liveToastBtn">
+        <div class="panels-icon4">
+            <i class='bx bxs-bell-ring' style='color:#ffffff' ></i>
+        </div>
+        <div class="panels-stats">
+            <div class="panels-stats-box">
+                <p class="stats-num">2</p>
+                <p class="stats-label">Notifications</p>
+            </div>
+        </div>
+    </div>
+  
+    <div class="name">
+      <strong class="content">P.O.S&nbsp;System</strong>
+    </div>
+
+  
+
+ </section>
+
+  
+  <!-- Scripts -->
+  <script src="script.js"></script>
+
+</body>
+</html>
