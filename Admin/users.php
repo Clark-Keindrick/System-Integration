@@ -53,30 +53,10 @@
             <strong class="ribbon-content">USER'S ACCOUNT INFORMATION</strong>
         </h1>
 
-        <div class="row row-cols-1 row-cols-md-3 g-4 card-image gap-5">
+        <div class="row row-cols-5 row-cols-sm-1 g-4 card-image gap-5">
             <?php view_users(); ?>
         </div>
     </section>
-
-    
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-danger">
-                    <h5 class="modal-title" id="staticBackdropLabel"><i class='bx bxs-user' style='color:#ffffff'></i> Delete User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete this user?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-danger btn-yes" data-bs-dismiss="modal">Yes</button>
-                    <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
   
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

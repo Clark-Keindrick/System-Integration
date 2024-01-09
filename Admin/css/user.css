@@ -62,44 +62,6 @@
   padding-left: 10px !important;
 }
 
-.modal{
-  transform: translateX(35%) !important;
-}
-
-.modal-header{
-  padding: 10px !important;
-}
-
-.modal-header i{
-  transform: translateY(4px) !important;
-  margin-left: 7px !important;
-  font-size: 29px !important;
-}
-
-.modal-title{
-  color: white !important;
-  font-weight: 700 !important;
-  font-size: 25px !important;
-}
-
-.modal-body{
-  padding: 17px !important;
-}
-
-.modal-footer{
-  padding: 7px !important;
-}
-
-.modal-footer button{
-  padding: 5px 25px!important;
-  font-size: 17px !important;
-  font-weight: 600 !important;
-}
-
-.btn-yes{
-  margin-right: 10px !important;
-}
-
 .bxs-trash{
   font-size: 25px !important;
   transform: translateY(2px) !important;
@@ -118,3 +80,4 @@
   font-size: 25px !important;
   font-weight: bold;
 }
+

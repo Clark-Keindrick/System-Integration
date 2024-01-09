@@ -295,7 +295,7 @@ function view_users(){
                             </div>
                             <div class="card-footer">
                                 <small class="text-muted">USER ID: '.$row["USER_ID"].'</small>
-                                <div><a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bx bxs-trash" style="color:#ff0003"></i></a></div>
+                                <div><a href="actions/denied_user.php?user_id='.$row['USER_ID'].'"><i class="bx bxs-trash" style="color:#ff0003"></i></a></div>
                             </div>
                         </div>
                     </div>';
@@ -747,6 +747,11 @@ function add_inventory(){
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                         SOMETHING IS MISSING!
                 </div>';
+        }else if($price <= 0 || $quantity <= 0){
+            echo '<div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        Numbers that are zero and below is not acceptable!
+                </div>';
         }else{
             $img_name = $_FILES['inv_pic']['name'];
             $img_size = $_FILES['inv_pic']['size'];
@@ -827,8 +832,7 @@ function add_inventory(){
 function total_items(){
     include "database.php";
 
-    $query = "SELECT COUNT(*) as total_count FROM INVENTORY, USER_ACCOUNTS 
-    WHERE (USER_ACCOUNTS.USER_ID = INVENTORY.USER_ID) AND INV_ACTIVE = 1";
+    $query = "SELECT COUNT(*) as total_count FROM INVENTORY WHERE INV_BRANCH = 'LLC' AND INV_ACTIVE = 1";
 
     $stmt = $pdo->prepare($query);
 
@@ -845,7 +849,7 @@ function inventory_item($userID){
     try{
         include "../database.php";
         
-        $query = "SELECT * FROM inventory, user_accounts WHERE (user_accounts.user_branch = 'LLC' AND user_accounts.user_id = inventory.user_id) and INV_ACTIVE = 1";
+        $query = "SELECT * FROM inventory WHERE INV_BRANCH = 'LLC'";
 
         $stmt = $pdo->prepare($query);
 
