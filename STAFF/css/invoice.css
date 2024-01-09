@@ -150,3 +150,31 @@
 
     border-color: black transparent transparent transparent;
 }
+
+.modal-header2{
+    padding: 10px;
+}
+
+.modal-title2{
+    color: white;
+    font-weight: 700;
+    font-size: 25px;
+}
+
+.modal-body2{
+    padding: 17px;
+}
+
+.modal-footer2{
+    padding: 7px;
+}
+
+.modal-footer2 button{
+    padding: 5px 15px;
+    font-size: 17px ;
+    font-weight: 600;
+}
+
+.btn-yes{
+    margin-right: 10px;
+}

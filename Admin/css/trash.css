@@ -16,8 +16,6 @@ table {
     border-radius: 4px;
 }
 
-
-
 table>thead {
     background-color: #00bcd4;
     color: #fff;
@@ -89,4 +87,11 @@ table>tbody>tr>td>img {
 
 .action_btn>a:nth-child(2) {
     border-color: red;
+}
+
+.home-section{
+    min-height: 100vh!important;
+    transition: all .5s ease!important;
+    z-index: 2!important;
+    margin: 70px 15px 0 100px !important;
 }

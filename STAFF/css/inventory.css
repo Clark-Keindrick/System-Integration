@@ -8,10 +8,6 @@
     transform: translateX(8px);
 }
 
-h1{
-    text-align: center;
-}
-
 .inv_label{
     padding-top: 10px;
     flex-shrink: 0;
@@ -28,22 +24,6 @@ h1{
     max-width: 450px;
     flex: 1;
     flex-shrink: 0;
-}
-
-.bx-cart-add{
-    font-size: 20px;
-    margin-right: 5px;
-}
-
-.inv_header a{
-    font-weight: 600;
-    vertical-align: middle;
-    flex-shrink: 0;
-    margin-left: 50px;
-}
-
-.inv_header a i{
-    transform: translateY(2px);
 }
 
 .inv_header .btn{
@@ -88,4 +68,41 @@ h1{
 
 .card-text span{
     font-weight: normal;
+}
+
+@media(min-width:961px) and (max-width:1650px){
+    .inv_header{
+        padding: 10px 15px;
+    }
+
+    .inv_label{
+        padding-top: 5px;
+        margin-right: 40px;
+        font-size: 20px;
+    }
+
+    .tot_item_label{
+        padding-top: 5px;
+        margin-left: 40px;
+        font-size: 20px;
+    }
+    
+    .searchbox input{
+        height: 40px;
+    }
+
+    .inv_header .btn{
+        padding: 3px 10px;
+    }
+
+    .item-list{
+        margin: 25px 0 0 30px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 40px;
+    }
+    
+    .sidebar{
+        width: 200px;
+    }
 }

@@ -1,35 +1,117 @@
-body {
-    background-color: #f8f9fa;
+.home-section{
+    min-height: 100vh!important;
+    z-index: 2!important;
+    margin: 70px 15px 0 100px !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    align-items: center;
 }
 
-.container {
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    
+.rib-container{
+  width: 100% !important;
 }
 
-form {
-    margin-top: 02px;
+.ribbon {
+    background: #f1c40f;
 }
 
-.btn {
-    margin-top: 10px;
+.ribbon:before, .ribbon:after {
+    border: 1.5em solid #f1c40f;
 }
 
-.purchase_header{
-    color: green;
-    font-weight: bold;
-    font-size: larger;
-    margin-top: 50px;
+.ribbon .ribbon-content:before, .ribbon .ribbon-content:after {
+    border-color: #f1c40f transparent transparent transparent ;
 }
 
-.purchase_text {
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
-    color: rgb(0, 0, 0);
-    font-size: 12px;
-    margin-top: 5px;
-    margin-left: 30px;
-    font-weight: bold;
-    text-align: left;
-    
+.container{
+  max-width: 900px !important;
+  width: 100% !important;
+  background-color: #fff !important;
+  padding: 25px 30px !important;
+  border-radius: 5px !important;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15) !important;
+  margin-top: 80px !important;
+}
+
+.content form .user-details{
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: space-between !important;
+  margin: 20px 0 12px 0 !important;
+}
+form .user-details .input-box{
+  margin-bottom: 15px !important;
+  width: calc(100% / 2 - 20px) !important;
+}
+form .input-box span.details{
+  display: block !important;
+  font-weight: 500 !important;
+  margin-bottom: 5px !important;
+}
+.user-details .input-box input, .user-details .input-box select{
+  height: 45px !important;
+  width: 100% !important;
+  outline: none !important;
+  font-size: 16px !important;
+  border-radius: 5px !important;
+  padding-left: 15px !important;
+  border: 1px solid #ccc !important;
+  border-bottom-width: 2px !important;
+  transition: all 0.3s ease !important;
+}
+.user-details .input-box input:focus,
+.user-details .input-box input:valid,
+.user-details .input-box select:focus,
+.user-details .input-box select:valid{
+  border-color: #9b59b6 !important;
+}
+
+ form .button{
+   height: 45px !important;
+   margin: 35px 0 !important;
+ }
+ form .button input{
+   height: 100% !important;
+   width: 100% !important;
+   border-radius: 5px !important;
+   border: none !important;
+   color: #fff !important;
+   font-size: 18px !important;
+   font-weight: 500 !important;
+   letter-spacing: 1px !important;
+   cursor: pointer !important;
+   transition: all 0.3s ease !important;
+   background: linear-gradient(135deg, #71b7e6, #9b59b6) !important;
+ }
+ form .button input:hover{
+  /* transform: scale(0.99); */
+  background: linear-gradient(-135deg, #71b7e6, #9b59b6) !important;
+  }
+ @media(max-width: 584px){
+  .container{
+    max-width: 100%;
+  }
+  form .user-details .input-box{
+      margin-bottom: 15px;
+      width: 100%;
+  }
+  form .category{
+    width: 100%;
+  }
+  .content form .user-details{
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+  .user-details::-webkit-scrollbar{
+    width: 5px;
+  }
+}
+@media(max-width: 459px){
+  .container .content .category{
+    flex-direction: column;
+  }
 }

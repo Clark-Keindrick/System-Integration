@@ -23,10 +23,132 @@
     width: 90%;
 }
 
-.bx{
+.bxs-trash{
     font-size: 23px;
+    color: red;
 }
 
-.bxs-trash{
-    color: red;
+.table img{
+    width: 25px !important;
+    transform: translateY(-4px) !important;
+    margin-right: 10px;
+}
+
+.modal-body{
+    position: relative;
+    padding: 20px 40px;
+}
+
+.modal-logo{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.modal-body img{
+    width: 120px;
+}
+
+.headings{
+    width: 100%;
+    text-align: center;
+    color: #000;
+    margin-bottom: 50px;
+}
+
+.headings h4{
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.headings p{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.modal-body h3{
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 600;
+    font-size: 33px;
+}
+
+.salutation{
+    margin-top: 40px;
+}
+
+.salutation p{
+    margin-top: 0;
+    margin-bottom: 6px;
+    color: #000;
+}
+
+.table-modal{
+    width: 100% !important;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mod-table{
+    width: 100% !important;
+}
+
+.mod-table table{
+    width: 100% !important;
+}
+
+.closing{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 60px;
+    color: #000;
+}
+
+.req_by{
+    min-width: 250px;
+}
+
+.req_by p{
+    margin-bottom: 20px;
+}
+
+.req_by span{
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.req_by hr{
+    opacity: 2;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.modal-header2{
+    padding: 10px;
+}
+
+.modal-title2{
+    color: white;
+    font-weight: 700;
+    font-size: 25px;
+}
+
+.modal-body2{
+    padding: 17px;
+}
+
+.modal-footer2{
+    padding: 7px;
+}
+
+.modal-footer2 button{
+    padding: 5px 15px;
+    font-size: 17px ;
+    font-weight: 600;
+}
+
+.btn-yes{
+    margin-right: 10px;
 }

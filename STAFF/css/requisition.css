@@ -192,3 +192,25 @@
 
     border-color: #36a7ff transparent transparent transparent;
 }
+
+@media(min-width:961px) and (max-width:1400px){
+    .datepick::placeholder{
+        font-weight: 600;
+        white-space: normal;
+        transform: translateY(-10px);
+    }
+
+    .btn-container button{
+        width: 200px;
+    }
+}
+
+@media(min-width:1400px) and (max-width:1700px){
+    .datepick::placeholder{
+        font-weight: 600;
+    }
+
+    .btn-container button{
+        width: 250px;
+    }
+}
