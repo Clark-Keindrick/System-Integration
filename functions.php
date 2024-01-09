@@ -578,7 +578,7 @@ function add_supplier(){
                 echo '<div class="alert alert2 alert-danger d-flex align-items-center profile_alert" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <div class="alert_label">
-                        Invalid email address !
+                        CHECK EMAIL OR PHONE NUMBER
                     </div>
                 </div> ';
             }
@@ -827,7 +827,8 @@ function add_inventory(){
 function total_items(){
     include "database.php";
 
-    $query = "SELECT COUNT(*) as total_count FROM INVENTORY WHERE INV_ACTIVE = 1";
+    $query = "SELECT COUNT(*) as total_count FROM INVENTORY, USER_ACCOUNTS 
+    WHERE (USER_ACCOUNTS.USER_ID = INVENTORY.USER_ID) AND INV_ACTIVE = 1";
 
     $stmt = $pdo->prepare($query);
 
@@ -840,7 +841,7 @@ function total_items(){
     return $total;
 }
 
-function inventory_item(){
+function inventory_item($userID){
     try{
         include "../database.php";
         
@@ -863,11 +864,31 @@ function inventory_item(){
                 else{
                     $border = 'border-success';
                 }
+
+                $query = "SELECT * FROM user_accounts WHERE USER_ID = :userID";
+
+                $stmt = $pdo->prepare($query);
+
+                $stmt->bindParam(":userID", $userID);
+
+                $stmt->execute();
+
+                $actions = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if($actions["USER_BRANCH"] == "ADMIN"){
+                    $viewAction = '<a href="edit_item.php?invID='.$row['INV_ID'].'"><i class="bx bxs-edit" style="color:#06c700"></i></a>';
+                    $viewAction2 = ' <a href="actions/remove_item.php?invID='.$row['INV_ID'].'"><i class="bx bxs-trash bxs-trash2" style="color:#ff0003"></i></a>';
+                }
+                else{
+                    $viewAction = '';
+                    $viewAction2 = '';
+                }
+
                 echo '<div class="card '.$border.' bg-light border-3" style="width: 20rem;">
-                        <div class="card-header bg-transparent border-success">
-                            <a href="edit_item.php?invID='.$row['INV_ID'].'"><i class="bx bxs-edit" style="color:#06c700"></i></a>
+                        <div class="card-header bg-transparent border-success"> 
+                            '.$viewAction.'
                             <p>'.$row["INV_DESCRIPTION"].'</p>
-                            <a href="actions/remove_item.php?invID='.$row['INV_ID'].'"><i class="bx bxs-trash bxs-trash2" style="color:#ff0003"></i></a>
+                            '.$viewAction2.'
                         </div>
                         <img src="../Inventory_Pic/'.$row["INV_PIC"].'" class="card-img-top" alt="...">
                         <div class="card-body">

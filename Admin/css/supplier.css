@@ -1,8 +1,9 @@
 .sup_list{
-    min-height: 65vh !important;
     z-index: 2!important;
-    margin: 50px 15px 0 70px !important;
+    margin: 50px 15px 70px 70px !important;
+    padding: 50px 0 !important;
 }
+
 
 .ribbon {
     background: #e74c3c;
@@ -133,4 +134,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+@media(min-width:961px) and (max-width:1650px){
+    .sup_form{
+        margin-top: 100px !important;
+    }
 }

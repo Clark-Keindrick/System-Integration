@@ -42,7 +42,7 @@ body{
     margin: 40px 0 0 70px!important;
     display: grid!important;
     grid-template-columns: 1fr 1fr 1fr 1fr!important;
-    gap: 30px!important;
+    gap: 10px!important;
 }
 
 .card-img-top{
@@ -228,7 +228,7 @@ main{
         margin-left: 40px !important;
         font-size: 20px !important;
     }
-    
+
     .searchbox input{
         height: 40px !important;
     }

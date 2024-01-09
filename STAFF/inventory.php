@@ -6,6 +6,8 @@
     	header("location: ../login.php");
     	exit();
 	}
+    $total_items = total_items();
+    $userID = $_SESSION["userID"];
 ?>
 
 <!DOCTYPE html>
@@ -42,129 +44,11 @@
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
                 </div>
-                <h3 class="tot_item_label">Total Items: 56</h3>
+                <h3 class="tot_item_label">Total Items: <?php echo $total_items; ?></h3>
             </div>
 
             <div class="item-list">
-                <div class="card border-success bg-light border-3" style="width: 17rem;">
-                    <div class="card-header bg-transparent border-success">Freewheel 18T Kent</div>
-                    <img src="image/freewheel.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <div class="first-row">
-                            <p class="card-text">ID: <span>1009</span></p>
-                            <p class="card-text">Unit: <span>pcs</span></p>
-                        </div>
-                        <div class="second-row">
-                            <p class="card-text">Price: <span>&#8369;51.00</span></p>
-                            <p class="card-text">Stocks: <span>25</span></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-success bg-light border-3" style="width: 17rem;">
-                    <div class="card-header bg-transparent border-success">Bar Tape T-35 Pink</div>
-                    <img src="image/bartape.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <div class="first-row">
-                            <p class="card-text">ID: <span>1010</span></p>
-                            <p class="card-text">Unit: <span>pairs</span></p>
-                        </div>
-                        <div class="second-row">
-                            <p class="card-text">Price: <span>&#8369;122.00</span></p>
-                            <p class="card-text">Stocks: <span>33</span></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-success bg-light border-3" style="width: 17rem;">
-                    <div class="card-header bg-transparent border-success">CST Tube 22 X 1.75</div>
-                    <img src="image/CST Tubes.jpeg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <div class="first-row">
-                            <p class="card-text">ID: <span>1011</span></p>
-                            <p class="card-text">Unit: <span>gross</span></p>
-                        </div>
-                        <div class="second-row">
-                            <p class="card-text">Price: <span>&#8369;104.00</span></p>
-                            <p class="card-text">Stocks: <span>17</span></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-success bg-light border-3" style="width: 17rem;">
-                    <div class="card-header bg-transparent border-success">CST Tire 700X25C</div>
-                    <img src="image/cst tire.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <div class="first-row">
-                            <p class="card-text">ID: <span>1012</span></p>
-                            <p class="card-text">Unit: <span>bottle</span></p>
-                        </div>
-                        <div class="second-row">
-                            <p class="card-text">Price: <span>&#8369;345.00</span></p>
-                            <p class="card-text">Stocks: <span>23</span></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-success bg-light border-3" style="width: 17rem;">
-                    <div class="card-header bg-transparent border-success">Freewheel 18T Kent</div>
-                    <img src="image/freewheel.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <div class="first-row">
-                            <p class="card-text">ID: <span>1013</span></p>
-                            <p class="card-text">Unit: <span>pcs</span></p>
-                        </div>
-                        <div class="second-row">
-                            <p class="card-text">Price: <span>&#8369;51.00</span></p>
-                            <p class="card-text">Stocks: <span>25</span></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-warning bg-light border-5" style="width: 17rem;">
-                    <div class="card-header bg-transparent border-success">CST Tube 22 X 1.75</div>
-                    <img src="image/CST Tubes.jpeg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <div class="first-row">
-                            <p class="card-text">ID: <span>1014</span></p>
-                            <p class="card-text">Unit: <span>gross</span></p>
-                        </div>
-                        <div class="second-row">
-                            <p class="card-text">Price: <span>&#8369;104.00</span></p>
-                            <p class="card-text">Stocks: <span>5</span></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-success bg-light border-3" style="width: 17rem;">
-                    <div class="card-header bg-transparent border-success">Bar Tape T-35 Pink</div>
-                    <img src="image/bartape.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <div class="first-row">
-                            <p class="card-text">ID: <span>1015</span></p>
-                            <p class="card-text">Unit: <span>pairs</span></p>
-                        </div>
-                        <div class="second-row">
-                            <p class="card-text">Price: <span>&#8369;122.00</span></p>
-                            <p class="card-text">Stocks: <span>33</span></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-danger bg-light border-5" style="width: 17rem;">
-                    <div class="card-header bg-transparent border-success">CST Tire 700X25C</div>
-                    <img src="image/cst tire.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <div class="first-row">
-                            <p class="card-text">ID: <span>1016</span></p>
-                            <p class="card-text">Unit: <span>bottle</span></p>
-                        </div>
-                        <div class="second-row">
-                            <p class="card-text">Price: <span>&#8369;345.00</span></p>
-                            <p class="card-text">Stocks: <span>0</span></p>
-                        </div>
-                    </div>
-                </div>
+                <?php inventory_item($userID); ?>
             </div>
         </main>
 

@@ -7,6 +7,7 @@
         exit();
     }
     $total_items = total_items();
+    $userID = $_SESSION["userID"];
 ?>
 
 <!DOCTYPE html>
@@ -67,7 +68,7 @@
         </div>
 
         <div class="item-list">
-            <?php inventory_item(); ?>
+            <?php inventory_item($userID); ?>
         </div>
     </main>
 
