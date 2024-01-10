@@ -6,8 +6,9 @@
     	header("location: ../login.php");
     	exit();
 	}
-    $total_items = total_items();
     $userID = $_SESSION["userID"];
+    $branch = $_SESSION["branch"];
+    $total_items = total_items($branch);
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +49,7 @@
             </div>
 
             <div class="item-list">
-                <?php inventory_item($userID); ?>
+                <?php inventory_item($userID, $branch); ?>
             </div>
         </main>
 

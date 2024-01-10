@@ -30,7 +30,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#"> <i class='bx bxs-home' style='color:#36a7ff' ></i></a></li>
-                <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Daily Sales</li>
                 </ol>
               </nav>

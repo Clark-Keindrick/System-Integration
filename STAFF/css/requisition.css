@@ -44,17 +44,6 @@
     gap: 30px;
 }
 
-.begin-row-2{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-.price-container{
-    width: 40%;
-}
-
 .float-1{
     flex: 1;
 }
@@ -180,6 +169,10 @@
     margin-bottom: 0;
 }
 
+.alert-box{
+    margin-top: 50px;
+}
+
 .ribbon {
     background: #36a7ff;
 }
@@ -192,6 +185,7 @@
 
     border-color: #36a7ff transparent transparent transparent;
 }
+
 
 @media(min-width:961px) and (max-width:1400px){
     .datepick::placeholder{

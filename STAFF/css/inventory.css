@@ -31,10 +31,10 @@
 }
 
 .item-list{
-    margin: 40px 0 0 70px;
+    margin: 40px 0 0 30px;
     display: grid!important;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 30px;
+    row-gap: 40px;
 }
 
 .card-img-top{
@@ -62,8 +62,14 @@
     justify-content: space-between;
 }
 
+.third-row{
+    display: flex;
+    justify-content: space-between;
+}
+
 .card-text{
     font-weight: bold;
+    font-size: 14px;
 }
 
 .card-text span{

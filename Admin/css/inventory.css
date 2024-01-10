@@ -42,7 +42,7 @@ body{
     margin: 40px 0 0 70px!important;
     display: grid!important;
     grid-template-columns: 1fr 1fr 1fr 1fr!important;
-    gap: 10px!important;
+    gap: 60px!important;
 }
 
 .card-img-top{
@@ -151,41 +151,6 @@ main{
 
 .bxs-trash2{
     margin-left: 10px !important;
-}
-
-.modal{
-    transform: translateX(35%) !important;
-}
-
-.modal-header{
-    padding: 10px !important;
-}
-
-.modal-title{
-    color: white !important;
-    font-weight: 700 !important;
-    font-size: 25px !important;
-}
-
-.modal-title img{
-    width: 35px !important;
-    margin-left: 6px !important;
-    transform: translateY(-5px) !important;
-}
-
-
-.modal-body{
-    padding: 17px !important;
-}
-
-.modal-footer{
-    padding: 7px !important;
-}
-
-.modal-footer button{
-    padding: 5px 15px!important;
-    font-size: 17px !important;
-    font-weight: 600 !important;
 }
 
 .btn-yes{

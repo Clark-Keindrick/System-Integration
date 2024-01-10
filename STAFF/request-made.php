@@ -6,6 +6,32 @@
     	header("location: ../login.php");
     	exit();
 	}
+
+    $userid2 = $_SESSION["userID"];
+    $session_name = $_SESSION["username"];
+    $row = array();
+	$row = user_data($session_name);
+    $author = $row["USER_FIRSTNAME"]." ".$row["USER_LASTNAME"];
+    $row2 = array();
+	$row2 = business_data();
+    $company = $row2["NAME"];
+    $email = $row2["CONTACT"];
+    $staddress= $row2["ST_ADDRESS"];
+    $phone= $row2["PHONE"];
+    $reqno;
+    $created;
+    $required;
+
+    if(empty($row3)){
+        $reqno = '';
+        $created = '';
+        $required = '';
+    }
+    else{
+        $reqno = $row3["REQ_ID"];
+        $created = $row3["REQ_DATE"];
+        $required = $row3["REQ_DATEREQ"];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -41,59 +67,7 @@
         </h1>
 
         <div class="inv_table table-responsive-md">
-            <table class="table table-hover table-striped text-center">
-                <thead class="table-success">
-                  <tr>
-                    <th scope="col">REQUEST ID</th>
-                    <th scope="col">DATE</th>
-                    <th scope="col">DATE REQUIRED</th>
-                    <th scope="col">AUTHOR</th>
-                    <th scope="col">STATUS</th>
-                    <th scope="col">USER ID</th>
-                    <th scope="col">ACTIONS</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                      <td>23240</td>
-                      <td>July 27, 2023</td>
-                      <td>August 9, 2023</td>
-                      <td>Clark Mollejon</td>
-                      <td>APPROVED</td>
-                      <td>14451</td>
-                      <td>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#requestModal"><img src="image/eye.png" alt="..."></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class='bx bxs-trash' ></i></a>
-                      </td>
-                    </tr>
-
-                    <tr>
-                        <td>23241</td>
-                        <td>September 10, 2023</td>
-                        <td>September 20, 2023</td>
-                        <td>Clark Mollejon</td>
-                        <td>DENIED</td>
-                        <td>14451</td>
-                        <td>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#requestModal"><img src="image/eye.png" alt="..."></a>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class='bx bxs-trash' ></i></a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>23242</td>
-                        <td>NOVEMMBER 13, 2023</td>
-                        <td>NOVEMMBER 23, 2023</td>
-                        <td>Clark Mollejon</td>
-                        <td>PENDING</td>
-                        <td>14451</td>
-                        <td>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#requestModal"><img src="image/eye.png" alt="..."></a>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class='bx bxs-trash' ></i></a>
-                        </td>
-                    </tr>
-                </tbody>
-              </table>
+            <?php echo requisition_table($userid2); ?>
         </div>
     </main>
 
@@ -128,70 +102,30 @@
                 </div>
 
                 <div class="headings">
-                    <h4>BikePro Bike Shop</h4>
-                    <p>Babang II Rd, Lapu-Lapu City, Cebu</p>
-                    <p>Phone: +63-927-981-5165</p>
-                    <p>Email: clarkmollejon18@gmail.com</p>
+                    <h4><?php echo $company; ?></h4>
+                    <p><?php echo $staddress; ?></p>
+                    <p><?php echo $phone; ?></p>
+                    <p><?php echo $email; ?></p>
                 </div>
 
                 <h3>Requisition Form</h3>
 
                 <div class="salutation">
-                    <p>Requisition no. : 34110</p>
-                    <p>Date created : 11/13/2023</p>
-                    <p>Date required : 11/18/2023</p>
+                     <p>Requisition no. : <?php echo $reqno; ?></p>
+                     <p>Date created : <?php echo $created; ?></p>
+                     <p>Date required : <?php echo $required; ?></p>
                 </div>
 
                 <div class="table-modal">
                     <div class="table-responsive-md mod-table mb-3">
-                        <table class="table table-bordered table-hover table-striped table-secondary">
-                            <thead>
-                                <tr>
-                                <th scope="col">Inventory #</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Unit</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Total Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                <td>1014</td>
-                                <td>CST Tube 22 X 1.75</td>
-                                <td>50</td>
-                                <td>pcs</td>
-                                <td>₱104.00</td>
-                                <td>₱5200.00</td>
-                                </tr>
-            
-                                <tr>
-                                <td>1016</td>
-                                <td>CST Tire 700X25C</td>
-                                <td>80</td>
-                                <td>pairs</td>
-                                <td>₱345.00</td>
-                                <td>₱27600.00</td>
-                                </tr>
-            
-                                <tr>
-                                <td>1009</td>
-                                <td>Freewheel 18T Kent</td>
-                                <td>20</td>
-                                <td>gross</td>
-                                <td>₱51.00</td>
-                                <td>₱1020.00</td>
-                                </tr>
-            
-                            </tbody>
-                        </table>
+                        <?php request_item_list($userID); ?>
                     </div>
                 </div>
 
                 <div class="closing">
                     <div class="req_by">
                         <p>Requested by:</p>
-                        <span>Clark Mollejon</span>
+                        <span><?php echo $author ?></span>
                         <hr>
                     </div>
                     
@@ -208,6 +142,18 @@
             </div>
         </div>
     </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+        </symbol>
+        <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+        </symbol>
+        <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </symbol>
+    </svg>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

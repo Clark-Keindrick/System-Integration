@@ -6,8 +6,9 @@
         header("location: ../login.php");
         exit();
     }
-    $total_items = total_items();
     $userID = $_SESSION["userID"];
+    $branch = 'LLC';
+    $total_items = total_items($branch);
 ?>
 
 <!DOCTYPE html>
@@ -68,27 +69,9 @@
         </div>
 
         <div class="item-list">
-            <?php inventory_item($userID); ?>
+            <?php inventory_item($userID, $branch); ?>
         </div>
     </main>
-
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title" id="staticBackdropLabel">Delete Item<img src="image/dustbin.png" alt="..."></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete this item?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-yes" data-bs-dismiss="modal">Yes</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">

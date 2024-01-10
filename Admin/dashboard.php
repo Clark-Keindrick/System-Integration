@@ -13,6 +13,7 @@
     $last_login = date('jS M Y H:i', strtotime($last_login));
     $total_user = user_count();
     $total_branch = branch_count();
+    $total_request = admin_requisition_count();
 ?>
 
 <!DOCTYPE html>
@@ -132,7 +133,7 @@
                     </div>
                     <div class="panels-stats">
                         <div class="panels-stats-box">
-                            <p class="stats-num">3</p>
+                            <p class="stats-num"><?php echo $total_request; ?></p>
                             <p class="stats-label">Requisitions</p>
                         </div>
                     </div>

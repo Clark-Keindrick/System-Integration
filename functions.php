@@ -261,6 +261,21 @@ function user_data($session_name){
     return $result;
 }
 
+function business_data(){
+    include "database.php";
+
+    $query = "SELECT * FROM BUSINESS_INFO";
+
+    $stmt = $pdo->prepare($query);
+
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC); 
+
+    return $result;
+}
+
+
 function view_users(){
     try{
         include "database.php";
@@ -275,6 +290,12 @@ function view_users(){
 
         if(!empty($result)){
             foreach($result as $row){ 
+                if($row["USER_BRANCH"] != 'ADMIN'){
+                    $delete = '<div><a href="actions/denied_user.php?user_id='.$row['USER_ID'].'"><i class="bx bxs-trash" style="color:#ff0003"></i></a></div>';
+                }
+                else{
+                    $delete = '';
+                }
                 echo '<div class="col img-container">
                         <div class="card h-100">
                             <img src="../ProfilePics/'.$row["USER_PIC"].'" class="card-img-top" alt="...">
@@ -295,7 +316,7 @@ function view_users(){
                             </div>
                             <div class="card-footer">
                                 <small class="text-muted">USER ID: '.$row["USER_ID"].'</small>
-                                <div><a href="actions/denied_user.php?user_id='.$row['USER_ID'].'"><i class="bx bxs-trash" style="color:#ff0003"></i></a></div>
+                                '.$delete.'
                             </div>
                         </div>
                     </div>';
@@ -547,7 +568,7 @@ function add_supplier(){
                 </div> ';
         }
         else{
-            if(filter_var($supEmail, FILTER_VALIDATE_EMAIL))
+            if(filter_var($supEmail, FILTER_VALIDATE_EMAIL) || preg_match("/^\\+?\\d{1,4}?[-.\\s]?\\(?\\d{1,3}?\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$/", $supContact))
             {
                 try{
                     include "../database.php";
@@ -578,7 +599,7 @@ function add_supplier(){
                 echo '<div class="alert alert2 alert-danger d-flex align-items-center profile_alert" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <div class="alert_label">
-                        CHECK EMAIL OR PHONE NUMBER
+                        CHECK EMAIL OR PHONE NUMBER !
                     </div>
                 </div> ';
             }
@@ -739,10 +760,10 @@ function add_inventory(){
         $price = trim($price);
         $supplierCode = filter_input(INPUT_POST,"inv_sup_code", FILTER_SANITIZE_NUMBER_INT);
         $supplierCode = trim($supplierCode);
-        $staffID = filter_input(INPUT_POST,"inv_user_id", FILTER_SANITIZE_NUMBER_INT);
-        $staffID = trim($staffID);
+        $invBranch = filter_input(INPUT_POST, "inv_branch", FILTER_SANITIZE_SPECIAL_CHARS);
+        $invBranch = trim($invBranch);
 
-        if(empty($description) || empty($quantity) || empty($unit) || empty($price) || empty($supplierCode) || empty($staffID) || empty($_FILES['inv_pic'])){
+        if(empty($description) || empty($quantity) || empty($unit) || empty($price) || empty($supplierCode) || empty($invBranch) || empty($_FILES['inv_pic'])){
             echo '<div class="alert alert-danger d-flex align-items-center" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                         SOMETHING IS MISSING!
@@ -783,12 +804,12 @@ function add_inventory(){
                             try{
                                 include "database.php";
                                 
-                                $query = "INSERT INTO inventory (INV_DESCRIPTION, INV_PIC, INV_INDATE, INV_QOH, INV_UNIT, INV_PRICE, SUP_CODE, USER_ID)
+                                $query = "INSERT INTO inventory (INV_DESCRIPTION, INV_PIC, INV_INDATE, INV_QOH, INV_UNIT, INV_PRICE, SUP_CODE, INV_BRANCH)
                                           VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
                                 $stmt = $pdo->prepare($query);
 
-                                $stmt->execute([$description, $new_img_name, $date, $quantity, $unit, $price, $supplierCode, $staffID]);
+                                $stmt->execute([$description, $new_img_name, $date, $quantity, $unit, $price, $supplierCode, $invBranch]);
 
                                 $pdo = null;
                                 $stmt = null;
@@ -829,12 +850,14 @@ function add_inventory(){
     }
 }
 
-function total_items(){
+function total_items($branch){
     include "database.php";
 
-    $query = "SELECT COUNT(*) as total_count FROM INVENTORY WHERE INV_BRANCH = 'LLC' AND INV_ACTIVE = 1";
+    $query = "SELECT COUNT(*) as total_count FROM INVENTORY WHERE INV_BRANCH = :branch AND INV_ACTIVE = 1";
 
     $stmt = $pdo->prepare($query);
+
+    $stmt->bindParam(":branch", $branch);
 
     $stmt->execute();
 
@@ -845,13 +868,15 @@ function total_items(){
     return $total;
 }
 
-function inventory_item($userID){
+function inventory_item($userID, $branch){
     try{
         include "../database.php";
         
-        $query = "SELECT * FROM inventory WHERE INV_BRANCH = 'LLC'";
+        $query = "SELECT * FROM inventory WHERE INV_BRANCH = :branch AND INV_ACTIVE = 1";
 
         $stmt = $pdo->prepare($query);
+
+        $stmt->bindParam(":branch", $branch);
 
         $stmt->execute();
 
@@ -888,7 +913,7 @@ function inventory_item($userID){
                     $viewAction2 = '';
                 }
 
-                echo '<div class="card '.$border.' bg-light border-3" style="width: 20rem;">
+                echo '<div class="card '.$border.' bg-light border-3" style="width: 19rem;">
                         <div class="card-header bg-transparent border-success"> 
                             '.$viewAction.'
                             <p>'.$row["INV_DESCRIPTION"].'</p>
@@ -953,6 +978,11 @@ function update_inventory($itemsID){
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                         SOMETHING IS MISSING!
                 </div>';
+        }else if($price <= 0 || $quantity <= 0){
+            echo '<div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        Numbers that are zero and below is not acceptable!
+                </div>';
         }else{              
             date_default_timezone_set('Asia/Manila');
             $currentDate = new DateTime();
@@ -999,5 +1029,459 @@ function update_inventory($itemsID){
         }
     else{
         echo "";
+    }
+}
+
+function add_requisition($userID){
+    if(isset($_POST["addreq"])) {
+        $author = filter_input(INPUT_POST, "author", FILTER_SANITIZE_SPECIAL_CHARS);
+        $author = trim($author);
+        $author = ucwords($author);
+        $pattern = '/^\d{2}-\d{2}-\d{2}$/';
+        $reqDATE = $_POST['datereq'];
+
+        if(empty($author) || empty($reqDATE)){
+            echo '<div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    Something went wrong!
+                  </div> ';
+        }else if(!preg_match($pattern, $reqDATE)){
+            echo '<div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        Invalid date format!
+                  </div> ';
+        }else{
+            try{
+                include "../database.php";
+                
+                $query = "INSERT INTO requisition (REQ_DATEREQ, REQ_AUTHOR, USER_ID) VALUES (?, ?, ?);";
+
+                $stmt = $pdo->prepare($query);
+
+                $stmt->execute([$reqDATE, $author, $userID]);
+        
+                echo '<script>setTimeout(function () { window.location.href = requisition.php";}, 500);</script>';
+                
+        
+            }
+            catch(PDOException $e){
+                echo '<div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                            '.$e->getMessage().'
+                    </div> ';
+            }
+        }
+    }
+}
+
+function requisition_count($userid2){
+    include "database.php";
+
+    $query = "SELECT COUNT(*) AS total_count FROM REQUISITION WHERE REQ_ACTIVE = 1 AND USER_ID = :userID";
+
+    $stmt = $pdo->prepare($query);
+
+    $stmt->bindParam(":userID", $userid2);
+
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC); 
+
+    $total = $result['total_count'];
+
+    return $total;
+}
+
+
+function admin_requisition_count(){
+    include "database.php";
+
+    $query = "SELECT COUNT(*) AS total_count FROM REQUISITION WHERE REQ_ACTIVE = 1 AND REQ_STATUS = 'PENDING'";
+
+    $stmt = $pdo->prepare($query);
+
+
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC); 
+
+    $total = $result['total_count'];
+
+    return $total;
+}
+
+function requisition_info($userID){
+    include "database.php";
+
+    $query = "SELECT * FROM REQUISITION WHERE REQ_STATUS = 'PROCESSING' AND USER_ID = :userID AND REQ_DATE = CURDATE()";
+
+    $stmt = $pdo->prepare($query);
+
+    $stmt->bindParam(":userID", $userID);
+
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC); 
+
+    return $result;
+}
+
+function requisition_table($userid2){
+    try{
+        include "database.php";
+        
+        $query = "SELECT * FROM REQUISITION WHERE REQ_ACTIVE = 1 AND USER_ID = :userID";
+
+        $stmt = $pdo->prepare($query);
+
+        $stmt->bindParam(":userID", $userid2);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+        if(!empty($result)){
+            ?>
+             <table class="table table-hover table-striped text-center">
+                <thead class="table-success">
+                  <tr>
+                    <th scope="col">REQUEST ID</th>
+                    <th scope="col">DATE</th>
+                    <th scope="col">DATE REQUIRED</th>
+                    <th scope="col">AUTHOR</th>
+                    <th scope="col">STATUS</th>
+                    <th scope="col">USER ID</th>
+                    <th scope="col">ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody>
+            <?php
+
+            foreach($result as $row){
+                echo '<tr >
+                        <td>'.$row["REQ_ID"].'</td>
+                        <td>'.$row["REQ_DATE"].'</td>
+                        <td>'.$row["REQ_DATEREQ"].'</td>
+                        <td>'.$row["REQ_AUTHOR"].'</td>
+                        <td>'.$row["REQ_STATUS"].'</td>
+                        <td>'.$row["USER_ID"].'</td>
+                        <td>
+                            <a href="actions/viewreq.php" data-bs-toggle="modal" data-bs-target="#requestModal"><img src="image/eye.png" alt="..."></a>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bx bxs-trash" ></i></a>
+                        </td>
+                     </tr>';
+            }
+            echo '</tbody>';
+            echo '</table>';
+        }
+        else{
+            echo '<div class="alert-box">
+                    <div class="alert alert-primary d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                        <div class="alert_label">
+                            No requisitions available !
+                        </div>
+                    </div>
+                </div>';
+        }
+        $pdo = null;
+        $stmt = null;
+    }
+    catch(PDOException $e){
+        echo '<div class="alert-box">
+                <div class="alert alert-primary d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div class="alert_label">
+                         '.$e->getMessage().'
+                    </div>
+                </div>
+            </div>';
+    }
+}
+
+
+function admin_requisition_table(){
+    try{
+        include "../database.php";
+        
+        $query = "SELECT * FROM REQUISITION WHERE REQ_ACTIVE = 1 AND REQ_STATUS = 'PENDING'";
+
+        $stmt = $pdo->prepare($query);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+        if(!empty($result)){
+            ?>
+             <table class="table table-hover table-striped text-center">
+                <thead class="table-primary">
+                  <tr>
+                    <th scope="col">REQUEST ID</th>
+                    <th scope="col">DATE</th>
+                    <th scope="col">DATE REQUIRED</th>
+                    <th scope="col">AUTHOR</th>
+                    <th scope="col">STATUS</th>
+                    <th scope="col">USER ID</th>
+                    <th scope="col">ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody>
+            <?php
+
+            foreach($result as $row){
+                echo '<tr >
+                        <td>'.$row["REQ_ID"].'</td>
+                        <td>'.$row["REQ_DATE"].'</td>
+                        <td>'.$row["REQ_DATEREQ"].'</td>
+                        <td>'.$row["REQ_AUTHOR"].'</td>
+                        <td>'.$row["REQ_STATUS"].'</td>
+                        <td>'.$row["USER_ID"].'</td>
+                        <td>
+                            <a href="actions/viewreq.php" data-bs-toggle="modal" data-bs-target="#requestModal"><img src="image/eye.png" alt="..." class="eyes"></a>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bx bxs-trash" ></i></a>
+                        </td>
+                     </tr>';
+            }
+            echo '</tbody>';
+            echo '</table>';
+        }
+        else{
+            echo '<div class="alert-box">
+                    <div class="alert alert-primary d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                        <div class="alert_label">
+                            No requisitions available !
+                        </div>
+                    </div>
+                </div>';
+        }
+        $pdo = null;
+        $stmt = null;
+    }
+    catch(PDOException $e){
+        echo '<div class="alert-box">
+                <div class="alert alert-primary d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div class="alert_label">
+                         '.$e->getMessage().'
+                    </div>
+                </div>
+            </div>';
+    }
+}
+
+function request_items(){
+    if(isset($_POST["req_item"])) {
+        include "../database.php";
+        $quantity = filter_input(INPUT_POST,"req_qty", FILTER_SANITIZE_NUMBER_INT);
+        $quantity = trim($quantity);
+        $price = filter_input(INPUT_POST, "req_price", FILTER_VALIDATE_FLOAT);
+        $price = trim($price);
+        $inventoryID = filter_input(INPUT_POST,"req_invID", FILTER_SANITIZE_NUMBER_INT);
+        $inventoryID = trim($inventoryID);
+        $req_ID = filter_input(INPUT_POST,"req-ID", FILTER_SANITIZE_NUMBER_INT);
+        $req_ID = trim($req_ID);
+
+        $query2 = "SELECT * FROM inventory WHERE INV_ID = :invID";
+
+        $stmt2 = $pdo->prepare($query2);
+
+        $stmt2->bindParam(":invID",  $inventoryID);
+
+        $stmt2->execute();
+
+        $result2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+        
+        $description =  $result2["INV_DESCRIPTION"];
+        $unit = $result2["INV_UNIT"];
+
+
+        if(empty($quantity) || empty($price) || empty($inventoryID) || empty($req_ID)){
+            echo '<div class="alert-box">
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        Something is missing !
+                    </div>
+                </div>';
+        }else if($price <= 0 || $quantity <= 0){
+            echo '<div class="alert-box">
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                            Numbers that are zero and below is not acceptable!
+                    </div>
+                </div>';
+        }else{
+            try{
+                include "database.php";
+                
+                $query = "INSERT INTO REQUISITION_ITEM(ITEM_DESCRIPTION, ITEM_UNIT, ITEM_QTY, ITEM_PRICE, ITEM_TOTPRICE, INV_ID, REQ_ID)
+                            VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+                $stmt = $pdo->prepare($query);
+
+                $stmt->execute([$description, $unit, $quantity, $price, ($price * $quantity), $inventoryID, $req_ID]);
+
+
+                echo '<div class="alert-box">
+                        <div class="alert alert-success d-flex align-items-center reg-status" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                                Saved Successfully!
+                        </div>
+                    </div>';
+
+                echo '<script>setTimeout(function () { window.location.href = "requisition.php";}, 600);</script>';
+
+            }
+            catch(PDOException $e){
+                echo '<div class="alert-box">
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                             '.$e->getMessage().'
+                        </div>
+                    </div>';
+            }
+        }
+
+    }else{
+        echo "";
+    }
+}
+
+
+function request_item_list($userID){
+    try{
+        include "database.php";
+        
+        $query = "SELECT * FROM REQUISITION_ITEM, REQUISITION WHERE REQUISITION.REQ_STATUS = 'PROCESSING' AND REQUISITION.USER_ID = :userID AND REQUISITION.REQ_ID = REQUISITION_ITEM.REQ_ID";
+
+        $stmt = $pdo->prepare($query);
+
+        $stmt->bindParam(":userID", $userID);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+        if(!empty($result)){
+            ?>
+             <table class="table table-bordered table-hover table-striped">
+                <thead class="table-secondary">
+                    <tr>
+                    <th scope="col">Inventory #</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Unit</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <?php
+
+            foreach($result as $row){
+                echo '<tr >
+                        <td>'.$row["INV_ID"].'</td>
+                        <td>'.$row["ITEM_DESCRIPTION"].'</td>
+                        <td>'.$row["ITEM_QTY"].'</td>
+                        <td>'.$row["ITEM_UNIT"].'</td>
+                        <td>'.$row["ITEM_PRICE"].'</td>
+                        <td>'.$row["ITEM_TOTPRICE"].'</td>
+                     </tr>';
+            }
+            echo '</tbody>';
+            echo '</table>';
+        }
+        else{
+            echo '<div class="alert-box">
+                    <div class="alert alert-primary d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                        <div class="alert_label">
+                            No requisitions available !
+                        </div>
+                    </div>
+                </div>';
+        }
+        $pdo = null;
+        $stmt = null;
+    }
+    catch(PDOException $e){
+        echo '<div class="alert-box">
+                <div class="alert alert-primary d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div class="alert_label">
+                         '.$e->getMessage().'
+                    </div>
+                </div>
+            </div>';
+    }
+}
+
+
+function view_request_item_list($userID){
+    try{
+        include "database.php";
+        
+        $query = "SELECT * FROM REQUISITION_ITEM, REQUISITION WHERE REQUISITION.REQ_STATUS = 'PROCESSING' AND REQUISITION.USER_ID = :userID AND REQUISITION.REQ_ID = REQUISITION_ITEM.REQ_ID";
+
+        $stmt = $pdo->prepare($query);
+
+        $stmt->bindParam(":userID", $userID);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+        if(!empty($result)){
+            ?>
+             <table class="table table-bordered table-hover table-striped">
+                <thead class="table-secondary">
+                    <tr>
+                    <th scope="col">Inventory #</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Unit</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <?php
+
+            foreach($result as $row){
+                echo '<tr >
+                        <td>'.$row["INV_ID"].'</td>
+                        <td>'.$row["ITEM_DESCRIPTION"].'</td>
+                        <td>'.$row["ITEM_QTY"].'</td>
+                        <td>'.$row["ITEM_UNIT"].'</td>
+                        <td>'.$row["ITEM_PRICE"].'</td>
+                        <td>'.$row["ITEM_TOTPRICE"].'</td>
+                     </tr>';
+            }
+            echo '</tbody>';
+            echo '</table>';
+        }
+        else{
+            echo '<div class="alert-box">
+                    <div class="alert alert-primary d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                        <div class="alert_label">
+                            No requisitions available !
+                        </div>
+                    </div>
+                </div>';
+        }
+        $pdo = null;
+        $stmt = null;
+    }
+    catch(PDOException $e){
+        echo '<div class="alert-box">
+                <div class="alert alert-primary d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div class="alert_label">
+                         '.$e->getMessage().'
+                    </div>
+                </div>
+            </div>';
     }
 }

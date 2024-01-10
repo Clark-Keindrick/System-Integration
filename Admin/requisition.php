@@ -53,52 +53,7 @@
         </h1>
 
         <div class="req_table table-responsive-md">
-            <table class="table table-hover table-striped text-center">
-                <thead class="table-primary">
-                <tr>
-                    <th scope="col">REQUEST ID</th>
-                    <th scope="col">DATE</th>
-                    <th scope="col">DATE REQUIRED</th>
-                    <th scope="col">AUTHOR</th>
-                    <th scope="col">STATUS</th>
-                    <th scope="col">ACTION</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr >
-                        <td>57093</td>
-                        <td>1/4/2024</td>
-                        <td>1/10/2024</td>
-                        <td>CLARK MOLLEJON</td>
-                        <td>PEDNING</td>
-                        <td>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#requestModal"><img src="image/eye.png" alt="..."></a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>57094</td>
-                        <td>1/2/2024</td>
-                        <td>1/8/2024</td>
-                        <td>JOHN ALBERT TORREON</td>
-                        <td>PENDING</td>
-                        <td>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#requestModal"><img src="image/eye.png" alt="..."></a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>67095</td>
-                        <td>1/1/2024</td>
-                        <td>1/8/2024</td>
-                        <td>BRYAN RACOMA</td>
-                        <td>PENDING</td>
-                        <td>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#requestModal"><img src="image/eye.png" alt="..."></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <?php admin_requisition_table(); ?>
         </div>
     </main>
 

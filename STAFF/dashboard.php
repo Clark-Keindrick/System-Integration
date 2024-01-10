@@ -7,10 +7,11 @@
     	exit();
 	}
     $session_name = $_SESSION["username"];
+    $userid2 = $_SESSION["userID"];
     $row = array();
 	$row = user_data($session_name);
     $last_login = $row["LAST_LOGIN"];
-    $total_user = user_count();
+    $total_requests = requisition_count($userid2);
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +51,7 @@
                     </div>
                     <div class="panels-stats">
                         <div class="panels-stats-box">
-                            <p class="stats-num">10</p>
+                            <p class="stats-num"><?php echo $total_requests; ?></p>
                             <p class="stats-label">Requests made</p>
                         </div>
                     </div>

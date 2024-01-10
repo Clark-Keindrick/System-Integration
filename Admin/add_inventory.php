@@ -85,7 +85,7 @@
 
                     <div class="pos-input">
                         <label>Unit</label>
-                        <select class="form-select" required aria-label="select example" name="inv_unit">
+                        <select class="form-select" aria-label="select example" name="inv_unit">
                             <option value="">Select Unit</option>
                             <option value="pcs">pcs</option>
                             <option value="gross">gross</option>
@@ -129,21 +129,10 @@
 
                     <div class="pos-input">
                         <label>Select User ID</label>
-                        <select class="form-select" required aria-label="select example" name="inv_user_id">
-                            <option value="">Select User ID</option>
-                                <?php
-                                    $query2 = "SELECT USER_ID FROM user_accounts WHERE USER_BRANCH <> 'ADMIN' AND USER_STATUS = 'APPROVED'";
-                            
-                                    $stmt2 = $pdo->prepare($query2);
-                            
-                                    $stmt2->execute();
-                            
-                                    $result2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-                                    
-                                    foreach($result2 as $userid){
-                                ?>
-                                    <option value="<?php echo $userid["USER_ID"]; ?>"><?php echo $userid["USER_ID"]; ?></option>
-                            <?php } ?>
+                        <select class="form-select" required aria-label="select example" name="inv_branch">
+                            <option value="">Select Branch</option>
+                            <option value="LLC">LLC</option>
+                            <option value="CORDOVA">CORDOVA</option>
                         </select>
                         <div class="invalid-feedback">Please select a branch</div>
                     </div>

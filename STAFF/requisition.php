@@ -1,11 +1,54 @@
 <?php
     require_once('../functions.php');
+    require_once('../database.php');
     session_start();
     if(!isset($_SESSION["username"]) && !isset($_SESSION["branch"]) )
 	{
     	header("location: ../login.php");
     	exit();
 	}
+    $session_name = $_SESSION["username"];
+    $userID = $_SESSION["userID"];
+    $row = array();
+	$row = user_data($session_name);
+    $author = $row["USER_FIRSTNAME"]." ".$row["USER_LASTNAME"];
+    $row = array();
+	$row2 = business_data();
+    $company = $row2["NAME"];
+    $email = $row2["CONTACT"];
+    $staddress= $row2["ST_ADDRESS"];
+    $phone= $row2["PHONE"];
+    $row3 = array();
+    $row3 = requisition_info($userID);
+    $reqno;
+    $created;
+    $required;
+
+    if(empty($row3)){
+        $reqno = '';
+        $created = '';
+        $required = '';
+    }
+    else{
+        $reqno = $row3["REQ_ID"];
+        $created = $row3["REQ_DATE"];
+        $required = $row3["REQ_DATEREQ"];
+    }
+
+    $query = "SELECT REQ_STATUS FROM REQUISITION WHERE REQ_STATUS = 'PROCESSING' AND REQ_DATE = CURDATE()";
+
+    $stmt = $pdo->prepare($query);
+
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC); 
+
+    if(empty($result)){
+        $button = '<button type="submit" class="btn btn-outline-primary col-4" name="addreq">Add Request</button>';
+    }
+    else{
+        $button = '';
+    }
 ?>
 
 <!DOCTYPE html>
@@ -49,16 +92,16 @@
                       Add a request first
                     </div>
                   </div>
-                <form action="" class="needs-validation" novalidate>
+                <form action="" class="needs-validation" novalidate method="post">
                     <div class="form-group begin-row">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control border-2 border-secondary" id="author" required placeholder="author">
+                            <input type="text" class="form-control border-2 border-secondary" value="<?php echo $author; ?>" id="author" required placeholder="author" name="author">
                             <label for="author">Author</label>
                             <div class="invalid-tooltip">Provide an author</div>
                         </div>
     
                         <div class="input-group date" id="datepicker" name="datePicker">
-                            <input type="text" class="form-control datepick border-2 border-secondary" required placeholder="Date Required">
+                            <input type="text" class="form-control datepick border-2 border-secondary" required placeholder="Date Required" name="datereq">
                             <span class="input-group-append ">
                                 <span class="input-group-text bg-white border-2 border-dark">
                                     <i class="fa fa-calendar"></i>
@@ -69,11 +112,14 @@
                     </div>
     
                     <div class="btn-container">
-                        <button type="submit" class="btn btn-outline-primary col-4" >Add Request</button>
+                        <?php echo $button; ?>
                     </div>
                 </form>
+                <div class="alert-box">
+                    <?php add_requisition($userID); ?>
+                </div>
             </div>
-
+        
             <div class="add-form-2 bg-light">
                 <div class="alert alert-warning d-flex align-items-center" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
@@ -81,99 +127,61 @@
                       Add items to your request
                     </div>
                   </div>
-                <form action="" class="needs-validation" novalidate>
+                <form action="" class="needs-validation" novalidate method="post">
                     <div class="form-group begin-row">
-                        <div class="form-floating mb-4">
-                            <input type="number" class="form-control" required id="quantity" placeholder="###">
-                            <label for="quantity">Quantity</label>
-                            <div class="invalid-feedback">Provide Quantity</div>
+                        <div class="form-floating">
+                            <select class="form-select" id="IDselect" required aria-label="Floating label select example" name="req-ID">
+                            <?php
+                                $query = "SELECT REQ_ID FROM REQUISITION WHERE REQ_STATUS = 'PROCESSING' AND REQ_DATE = CURDATE();";
+                        
+                                $stmt = $pdo->prepare($query);
+                        
+                                $stmt->execute();
+                        
+                                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                
+                                foreach($result as $reqID){
+                            ?>
+                                <option value="<?php echo $reqID["REQ_ID"]; ?>"><?php echo $reqID["REQ_ID"]; ?></option>
+                        <?php } ?>
+                            </select>
+                            <label for="IDselect">Select Requsition ID</label>
+                            <div class="invalid-feedback">Please select a requisition ID</div>
                         </div>
                         <div class="form-floating mb-4">
-                            <input type="number" class="form-control" required id="Inv_id" placeholder="###">
+                            <input type="number" class="form-control" required id="Inv_id" placeholder="###" name="req_invID">
                             <label for="Inv_id">Inventory ID</label>
                             <div class="invalid-feedback">Provide Iventory ID</div>
                         </div>
                     </div>
     
                     <div class="form-group begin-row">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="dscrptn" required placeholder="description">
-                            <label for="dscrptn">Description</label>
-                            <div class="invalid-feedback">Provide Description</div>
-                        </div>
-    
-                        <div class="form-floating">
-                            <select class="form-select" id="unitselect" required aria-label="Floating label select example">
-                              <option value="1">pcs</option>
-                              <option value="2">gross</option>
-                              <option value="3">sets</option>
-                              <option value="4">pairs</option>
-                              <option value="5">bottle</option>
-                              <option value="6">can</option>
-                            </select>
-                            <label for="unitselect">Select unit</label>
-                            <div class="invalid-feedback">Please select a unit</div>
-                        </div>
-                    </div>
-    
-                    <div class="form-group begin-row-2">
-                        <div class="form-floating mb-4 price-container">
-                            <input type="number" class="form-control price" required id="price" placeholder="###">
+                        <div class="form-floating mb-4">
+                            <input type="number" class="form-control price" required id="price" placeholder="###" name="req_price" step=".01">
                             <label for="price">Price</label>
                             <div class="invalid-feedback">Provide a Price</div>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input type="number" class="form-control" required id="quantity" placeholder="###" name="req_qty">
+                            <label for="quantity">Quantity</label>
+                            <div class="invalid-feedback">Provide Quantity</div>
                         </div>
                     </div>
     
                     <div class="btn-container">
-                        <button type="submit" class="btn btn-success col-4" >Save</button>
+                        <button type="submit" class="btn btn-success col-4" name="req_item">Save</button>
                     </div>
                 </form>
+                <?php request_items(); ?>
             </div>
         </div>
 
         <section class="mb-5 table-sec">
             <div class="table-responsive-md rq-table mb-3">
-                <table class="table table-bordered table-hover table-striped">
-                <thead class="table-dark">
-                    <tr>
-                    <th scope="col">Inventory #</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Unit</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Total Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                    <td>1014</td>
-                    <td>CST Tube 22 X 1.75</td>
-                    <td>50</td>
-                    <td>pcs</td>
-                    <td>₱104.00</td>
-                    <td>₱5200.00</td>
-                    </tr>
-
-                    <tr>
-                    <td>1016</td>
-                    <td>CST Tire 700X25C</td>
-                    <td>80</td>
-                    <td>pairs</td>
-                    <td>₱345.00</td>
-                    <td>₱27600.00</td>
-                    </tr>
-
-                    <tr>
-                    <td>1009</td>
-                    <td>Freewheel 18T Kent</td>
-                    <td>20</td>
-                    <td>gross</td>
-                    <td>₱51.00</td>
-                    <td>₱1020.00</td>
-                    </tr>
-
-                </tbody>
-                </table>
+            <table class="table table-bordered table-hover table-striped">
+                <?php request_item_list($userID); ?>
+            </table>
             </div>
             <button type="submit" class="btn btn-primary col-2" data-bs-toggle="modal" data-bs-target="#requestModal"><i class='bx bxs-send' style='color:#ffffff'></i>Request</button>
         </section>
@@ -191,62 +199,24 @@
                     </div>
 
                     <div class="headings">
-                        <h4>BikePro Bike Shop</h4>
-                        <p>Babang II Rd, Lapu-Lapu City, Cebu</p>
-                        <p>Phone: +63-927-981-5165</p>
-                        <p>Email: clarkmollejon18@gmail.com</p>
+                        <h4><?php echo $company; ?></h4>
+                        <p><?php echo $staddress; ?></p>
+                        <p>Phone: <?php echo $phone; ?></p>
+                        <p>Email: <?php echo $email; ?></p>
                     </div>
 
                     <h3>Requisition Form</h3>
 
                     <div class="salutation">
-                        <p>Requisition no. : 34110</p>
-                        <p>Date created : 11/13/2023</p>
-                        <p>Date required : 11/18/2023</p>
+                        <p>Requisition no. : <?php echo $reqno; ?></p>
+                        <p>Date created : <?php echo $created; ?></p>
+                        <p>Date required : <?php echo $required; ?></p>
                     </div>
 
                     <div class="table-modal">
                         <div class="table-responsive-md mod-table mb-3">
                             <table class="table table-bordered table-hover table-striped table-secondary">
-                                <thead>
-                                    <tr>
-                                    <th scope="col">Inventory #</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Unit</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Total Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                    <td>1014</td>
-                                    <td>CST Tube 22 X 1.75</td>
-                                    <td>50</td>
-                                    <td>pcs</td>
-                                    <td>₱104.00</td>
-                                    <td>₱5200.00</td>
-                                    </tr>
-                
-                                    <tr>
-                                    <td>1016</td>
-                                    <td>CST Tire 700X25C</td>
-                                    <td>80</td>
-                                    <td>pairs</td>
-                                    <td>₱345.00</td>
-                                    <td>₱27600.00</td>
-                                    </tr>
-                
-                                    <tr>
-                                    <td>1009</td>
-                                    <td>Freewheel 18T Kent</td>
-                                    <td>20</td>
-                                    <td>gross</td>
-                                    <td>₱51.00</td>
-                                    <td>₱1020.00</td>
-                                    </tr>
-                
-                                </tbody>
+                                <?php request_item_list($userID); ?>
                             </table>
                         </div>
                     </div>
@@ -266,7 +236,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
-                  <button type="button" class="btn btn-success">Yes</button>
+                  <button type="button" class="btn btn-success" onclick="location.href='actions/sendReq.php'">Yes</button>
                 </div>
               </div>
             </div>
@@ -299,7 +269,7 @@
     <script type="text/javascript">
         $(document).ready(function(){
             $('#datepicker').datepicker({
-                format: 'mm-dd-yyyy',
+                format: 'yy-mm-dd',
                 startDate: new Date() // Set the startDate option to the current date
             });
         });
