@@ -17,11 +17,25 @@ function register_user(){
         $branch = filter_input(INPUT_POST,"branch", FILTER_SANITIZE_SPECIAL_CHARS);
         $pwd = filter_input(INPUT_POST,"pword", FILTER_SANITIZE_SPECIAL_CHARS);
         $confirmpwd = filter_input(INPUT_POST,"confirmPword", FILTER_SANITIZE_SPECIAL_CHARS);
+        $pattern = '/^\d{11}$/';
+        $pattern2 = '/^[A-Za-z]+$/';
 
         if(empty($firstname) || empty($lastname) || empty($contact) || empty($bdate) || empty($gender) || empty($username) || empty($pwd) || empty($confirmpwd) || empty($branch) || empty($_FILES['profpic'])){
             echo '<div class="alert alert-danger d-flex align-items-center reg-status" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     Something is Missing!
+                 </div>';
+        }
+        else if(!preg_match($pattern, $contact)){
+            echo '<div class="alert alert-danger d-flex align-items-center reg-status" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    Invalid phone number !
+                 </div>';
+        }
+        else if(!preg_match($pattern2, $firstname) || !preg_match($pattern2, $lastname)){
+            echo '<div class="alert alert-danger d-flex align-items-center reg-status" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    Invalid Firstname or Lastname !
                  </div>';
         }
         else{
@@ -500,6 +514,8 @@ function change_user_info($userID){
         $profileLname = ucwords($profileLname);
         $profphnum = filter_input(INPUT_POST,"newphnum", FILTER_SANITIZE_SPECIAL_CHARS);
         $profphnum = trim($profphnum );
+        $pattern = '/^[A-Za-z]+$/';
+        $pattern2 = '/^\d{11}$/';
 
         if(empty($profileFname) || empty($profileLname) || empty($profphnum)){
             echo '<div class="alert alert-danger d-flex align-items-center profile_alert" role="alert">
@@ -508,32 +524,51 @@ function change_user_info($userID){
                         Something is missing!
                     </div>
                 </div> ';
-        }
-        else{
-            try{
-                include "../database.php";
+        }else{
+            if(preg_match($pattern, $profileFname) || preg_match($pattern, $profileLname)){
+                if(preg_match($pattern2, $profphnum)){
+                    try{
+                        include "../database.php";
+                        
+                        $query = "UPDATE user_accounts SET USER_FIRSTNAME = :profname, USER_LASTNAME = :proflname, USER_PHONENUM = :phnumber WHERE USER_ID = :userID";
                 
-                $query = "UPDATE user_accounts SET USER_FIRSTNAME = :profname, USER_LASTNAME = :proflname, USER_PHONENUM = :phnumber WHERE USER_ID = :userID";
-        
-                $stmt = $pdo->prepare($query);
+                        $stmt = $pdo->prepare($query);
+                        
+                        $stmt->bindParam(":profname", $profileFname);
+                        $stmt->bindParam(":proflname", $profileLname);
+                        $stmt->bindParam(":phnumber", $profphnum);
+                        $stmt->bindParam(":userID", $userID);
                 
-                $stmt->bindParam(":profname", $profileFname);
-                $stmt->bindParam(":proflname", $profileLname);
-                $stmt->bindParam(":phnumber", $profphnum);
-                $stmt->bindParam(":userID", $userID);
-        
-                $stmt->execute();
-        
-                echo '<script>setTimeout(function () { window.location.href = "dashboard.php";}, 500);</script>';
-        
-                $pdo = null;
-                $stmt = null;
+                        $stmt->execute();
+                
+                        echo '<script>setTimeout(function () { window.location.href = "dashboard.php";}, 500);</script>';
+                
+                        $pdo = null;
+                        $stmt = null;
+                    }
+                    catch(PDOException $e){
+                        echo '<div class="alert alert-danger d-flex align-items-center profile_alert" role="alert">
+                                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                                <div class="alert_label">
+                                        Query failed: '.$e->getMessage().'
+                                </div>
+                            </div> ';
+                    }
+                }
+                else{
+                    echo '<div class="alert alert-danger d-flex align-items-center profile_alert" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                            <div class="alert_label">
+                                Invalid Phone Number
+                            </div>
+                        </div> ';
+                }
             }
-            catch(PDOException $e){
+            else{
                 echo '<div class="alert alert-danger d-flex align-items-center profile_alert" role="alert">
                         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                         <div class="alert_label">
-                                Query failed: '.$e->getMessage().'
+                            Invalid firstname or lastname
                         </div>
                     </div> ';
             }
@@ -872,7 +907,7 @@ function inventory_item($userID, $branch){
     try{
         include "../database.php";
         
-        $query = "SELECT * FROM inventory WHERE INV_BRANCH = :branch AND INV_ACTIVE = 1";
+        $query = "SELECT * FROM inventory WHERE INV_BRANCH = :branch AND INV_ACTIVE = 1 ORDER BY INV_QOH ASC";
 
         $stmt = $pdo->prepare($query);
 
@@ -1059,9 +1094,9 @@ function add_requisition($userID){
                 $stmt = $pdo->prepare($query);
 
                 $stmt->execute([$reqDATE, $author, $userID]);
-        
-                echo '<script>setTimeout(function () { window.location.href = requisition.php";}, 500);</script>';
                 
+                echo '<script>setTimeout(function () { window.location.href = "dashboard.php";});</script>';
+                echo '<script>setTimeout(function () { window.location.href = "requisition.php";});</script>';
         
             }
             catch(PDOException $e){
@@ -1126,6 +1161,7 @@ function requisition_info($userID){
     return $result;
 }
 
+
 function requisition_table($userid2){
     try{
         include "database.php";
@@ -1166,7 +1202,7 @@ function requisition_table($userid2){
                         <td>'.$row["REQ_STATUS"].'</td>
                         <td>'.$row["USER_ID"].'</td>
                         <td>
-                            <a href="actions/viewreq.php" data-bs-toggle="modal" data-bs-target="#requestModal"><img src="image/eye.png" alt="..."></a>
+                            <a href="request-made.php?reqid='.$row["REQ_ID"].'" data-bs-toggle="modal" data-bs-target="#requestModal"><img src="image/eye.png" alt="..."></a>
                             <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bx bxs-trash" ></i></a>
                         </td>
                      </tr>';
@@ -1276,8 +1312,6 @@ function request_items(){
         include "../database.php";
         $quantity = filter_input(INPUT_POST,"req_qty", FILTER_SANITIZE_NUMBER_INT);
         $quantity = trim($quantity);
-        $price = filter_input(INPUT_POST, "req_price", FILTER_VALIDATE_FLOAT);
-        $price = trim($price);
         $inventoryID = filter_input(INPUT_POST,"req_invID", FILTER_SANITIZE_NUMBER_INT);
         $inventoryID = trim($inventoryID);
         $req_ID = filter_input(INPUT_POST,"req-ID", FILTER_SANITIZE_NUMBER_INT);
@@ -1297,14 +1331,14 @@ function request_items(){
         $unit = $result2["INV_UNIT"];
 
 
-        if(empty($quantity) || empty($price) || empty($inventoryID) || empty($req_ID)){
+        if(empty($quantity) || empty($inventoryID) || empty($req_ID)){
             echo '<div class="alert-box">
                     <div class="alert alert-danger d-flex align-items-center" role="alert">
                         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                         Something is missing !
                     </div>
                 </div>';
-        }else if($price <= 0 || $quantity <= 0){
+        }else if($quantity <= 0){
             echo '<div class="alert-box">
                     <div class="alert alert-danger d-flex align-items-center" role="alert">
                         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
@@ -1315,12 +1349,12 @@ function request_items(){
             try{
                 include "database.php";
                 
-                $query = "INSERT INTO REQUISITION_ITEM(ITEM_DESCRIPTION, ITEM_UNIT, ITEM_QTY, ITEM_PRICE, ITEM_TOTPRICE, INV_ID, REQ_ID)
-                            VALUES (?, ?, ?, ?, ?, ?, ?);";
+                $query = "INSERT INTO REQUISITION_ITEM(ITEM_DESCRIPTION, ITEM_UNIT, ITEM_QTY, INV_ID, REQ_ID)
+                            VALUES (?, ?, ?, ?, ?);";
 
                 $stmt = $pdo->prepare($query);
 
-                $stmt->execute([$description, $unit, $quantity, $price, ($price * $quantity), $inventoryID, $req_ID]);
+                $stmt->execute([$description, $unit, $quantity, $inventoryID, $req_ID]);
 
 
                 echo '<div class="alert-box">
@@ -1372,8 +1406,6 @@ function request_item_list($userID){
                     <th scope="col">Description</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Unit</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Total Price</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1385,8 +1417,6 @@ function request_item_list($userID){
                         <td>'.$row["ITEM_DESCRIPTION"].'</td>
                         <td>'.$row["ITEM_QTY"].'</td>
                         <td>'.$row["ITEM_UNIT"].'</td>
-                        <td>'.$row["ITEM_PRICE"].'</td>
-                        <td>'.$row["ITEM_TOTPRICE"].'</td>
                      </tr>';
             }
             echo '</tbody>';
@@ -1441,8 +1471,6 @@ function view_request_item_list($userID){
                     <th scope="col">Description</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Unit</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Total Price</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1454,8 +1482,6 @@ function view_request_item_list($userID){
                         <td>'.$row["ITEM_DESCRIPTION"].'</td>
                         <td>'.$row["ITEM_QTY"].'</td>
                         <td>'.$row["ITEM_UNIT"].'</td>
-                        <td>'.$row["ITEM_PRICE"].'</td>
-                        <td>'.$row["ITEM_TOTPRICE"].'</td>
                      </tr>';
             }
             echo '</tbody>';

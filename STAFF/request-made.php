@@ -1,5 +1,6 @@
 <?php
     require_once('../functions.php');
+    require_once('../database.php');
     session_start();
     if(!isset($_SESSION["username"]) && !isset($_SESSION["branch"]) )
 	{
@@ -32,6 +33,7 @@
         $created = $row3["REQ_DATE"];
         $required = $row3["REQ_DATEREQ"];
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -118,7 +120,24 @@
 
                 <div class="table-modal">
                     <div class="table-responsive-md mod-table mb-3">
-                        <?php request_item_list($userID); ?>
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead class="table-secondary">
+                                <tr>
+                                <th scope="col">Inventory #</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Unit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr >
+                                    <td>fsdf</td>
+                                    <td>sdf</td>
+                                    <td>sdf</td>
+                                    <td>sdffsd</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -131,7 +150,7 @@
                     
                     <div class="req_by">
                         <p>Approved by:</p>
-                        <span>Julie Anne Villahermosa</span>
+                        <span></span>
                         <hr>
                     </div>
                 </div>

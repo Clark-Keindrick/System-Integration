@@ -35,13 +35,15 @@
         $required = $row3["REQ_DATEREQ"];
     }
 
-    $query = "SELECT REQ_STATUS FROM REQUISITION WHERE REQ_STATUS = 'PROCESSING' AND REQ_DATE = CURDATE()";
+    $query2 = "SELECT REQ_STATUS FROM REQUISITION WHERE REQ_STATUS = 'PROCESSING' AND REQ_DATE = CURDATE() AND USER_ID = :userid";
 
-    $stmt = $pdo->prepare($query);
+    $stmt2 = $pdo->prepare($query2);
 
-    $stmt->execute();
+    $stmt2->bindParam(":userid", $userID);
 
-    $result = $stmt->fetch(PDO::FETCH_ASSOC); 
+    $stmt2->execute();
+
+    $result = $stmt2->fetch(PDO::FETCH_ASSOC); 
 
     if(empty($result)){
         $button = '<button type="submit" class="btn btn-outline-primary col-4" name="addreq">Add Request</button>';
@@ -132,15 +134,17 @@
                         <div class="form-floating">
                             <select class="form-select" id="IDselect" required aria-label="Floating label select example" name="req-ID">
                             <?php
-                                $query = "SELECT REQ_ID FROM REQUISITION WHERE REQ_STATUS = 'PROCESSING' AND REQ_DATE = CURDATE();";
+                                $query2= "SELECT REQ_ID FROM REQUISITION WHERE REQ_STATUS = 'PROCESSING' AND REQ_DATE = CURDATE() AND USER_ID = :userid;";
                         
-                                $stmt = $pdo->prepare($query);
+                                $stmt2 = $pdo->prepare($query2);
+
+                                $stmt2->bindParam(":userid", $userID);
                         
-                                $stmt->execute();
+                                $stmt2->execute();
                         
-                                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                $result2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                                 
-                                foreach($result as $reqID){
+                                foreach($result2 as $reqID){
                             ?>
                                 <option value="<?php echo $reqID["REQ_ID"]; ?>"><?php echo $reqID["REQ_ID"]; ?></option>
                         <?php } ?>
@@ -155,14 +159,8 @@
                         </div>
                     </div>
     
-                    <div class="form-group begin-row">
-                        <div class="form-floating mb-4">
-                            <input type="number" class="form-control price" required id="price" placeholder="###" name="req_price" step=".01">
-                            <label for="price">Price</label>
-                            <div class="invalid-feedback">Provide a Price</div>
-                        </div>
-
-                        <div class="form-floating mb-4">
+                    <div class="form-group begin-row2">
+                        <div class="form-floating mb-4 qty-box">
                             <input type="number" class="form-control" required id="quantity" placeholder="###" name="req_qty">
                             <label for="quantity">Quantity</label>
                             <div class="invalid-feedback">Provide Quantity</div>

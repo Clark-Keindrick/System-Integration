@@ -106,11 +106,11 @@
                     </div>
 
                     <div class="pos-input">
-                        <label>Supplier Code</label>
+                        <label>Supplier Name</label>
                         <select class="form-select" required aria-label="select example" name="inv_sup_code">
-                            <option value="">Select Supplier Code</option>
+                            <option value="">Select Supplier</option>
                             <?php
-                                $query = "SELECT SUP_CODE FROM supplier";
+                                $query = "SELECT SUP_CODE, COMPANY FROM supplier";
                         
                                 $stmt = $pdo->prepare($query);
                         
@@ -120,7 +120,7 @@
                                 
                                 foreach($result as $Sup_Code){
                             ?>
-                                <option value="<?php echo $Sup_Code["SUP_CODE"]; ?>"><?php echo $Sup_Code["SUP_CODE"]; ?></option>
+                                <option value="<?php echo $Sup_Code["SUP_CODE"]; ?>"><?php echo $Sup_Code["COMPANY"]; ?></option>
                         <?php } ?>
 
                         </select>
@@ -128,7 +128,7 @@
                     </div>
 
                     <div class="pos-input">
-                        <label>Select User ID</label>
+                        <label>Select Branch</label>
                         <select class="form-select" required aria-label="select example" name="inv_branch">
                             <option value="">Select Branch</option>
                             <option value="LLC">LLC</option>

@@ -48,7 +48,7 @@
             <div class="setting-container">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        Admin Details
+                        Profile Details
                     </div>
                     <form class="form-signin" method="post" action="">
                         <div class="panel-body">

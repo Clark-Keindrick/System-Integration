@@ -13,6 +13,7 @@
     $row = items_data($itemsID);
     $desc = $row["INV_DESCRIPTION"];
     $pic = $row["INV_PIC"];
+    $company = $row["COMPANY"];
     $qoh = $row["INV_QOH"];
     $unit = $row["INV_UNIT"];
     $price = $row["INV_PRICE"];
@@ -92,11 +93,10 @@
                         </select>
                         <label class="lblbox">Price</label>
                         <input type="number" placeholder="P#.##" class="form-control" required value="<?php echo $price; ?>" name="updatePrice" step=".01">
-                        <label class="lblbox">Supplier Code</label>
+                        <label class="lblbox">Supplier Name</label>
                         <select class="form-select p-2" required aria-label="select example"  name="updateSupcode">
-                            <option value="<?php echo $supcode; ?>"><?php echo $supcode; ?></option>
                             <?php
-                                $query = "SELECT SUP_CODE FROM supplier";
+                                $query = "SELECT SUP_CODE, COMPANY FROM supplier";
                         
                                 $stmt = $pdo->prepare($query);
                         
@@ -106,7 +106,7 @@
                                 
                                 foreach($result as $Sup_Code){
                             ?>
-                                <option value="<?php echo $Sup_Code["SUP_CODE"]; ?>"><?php echo $Sup_Code["SUP_CODE"]; ?></option>
+                                <option value="<?php echo $Sup_Code["SUP_CODE"]; ?>"><?php echo $Sup_Code["COMPANY"]; ?></option>
                         <?php } ?>
                         </select>
                 </div>

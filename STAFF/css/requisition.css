@@ -44,6 +44,17 @@
     gap: 30px;
 }
 
+.begin-row2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.qty-box{
+    width: 47%;
+}
+
 .float-1{
     flex: 1;
 }
