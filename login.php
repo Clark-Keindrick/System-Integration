@@ -61,7 +61,8 @@
             <button type="submit" class="btn">Login</button>
 
             <div class="register-link">
-                <p>Dont't have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Register</a></p>
+                <div><a href="#" data-bs-toggle="modal" data-bs-target="#registerStatus">Registration's Status</a></div>
+                <div><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Register</a></div>
             </div>
         </form>
     </div>
@@ -161,6 +162,24 @@
                             </div>
                             <button type="submit" name="register" class="btn btn-primary" >Register</button>
                         </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="registerStatus" tabindex="1" aria-labelledby="registerStatusLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="registerStatusLabel">REGISTRATION'S STATUS</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row row-cols-sm-1 row-cols-md-10  card-image">
+                        <?php view_reg_status(); ?>
                     </div>
                 </div>
                 <div class="modal-footer">

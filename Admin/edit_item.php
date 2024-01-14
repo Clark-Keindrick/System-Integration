@@ -1,5 +1,6 @@
 <?php
     require_once('../functions.php');
+    require_once('../database.php');
     session_start();
     if(!isset($_SESSION["username"]) && !isset($_SESSION["branch"]) )
     {
@@ -13,11 +14,22 @@
     $row = items_data($itemsID);
     $desc = $row["INV_DESCRIPTION"];
     $pic = $row["INV_PIC"];
-    $company = $row["COMPANY"];
     $qoh = $row["INV_QOH"];
     $unit = $row["INV_UNIT"];
     $price = $row["INV_PRICE"];
     $supcode = $row["SUP_CODE"];
+
+    $query = "SELECT SUP_CODE, COMPANY FROM supplier WHERE SUP_CODE = :supCode";
+                        
+            $stmt = $pdo->prepare($query);
+
+            $stmt->bindParam("supCode", $supcode);
+    
+            $stmt->execute();
+    
+            $supplierCode = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $supplierCompany =  $supplierCode["COMPANY"]
 ?>
 
 <!DOCTYPE html>
@@ -95,6 +107,7 @@
                         <input type="number" placeholder="P#.##" class="form-control" required value="<?php echo $price; ?>" name="updatePrice" step=".01">
                         <label class="lblbox">Supplier Name</label>
                         <select class="form-select p-2" required aria-label="select example"  name="updateSupcode">
+                        <option value="<?php echo $supcode; ?>"><?php echo $supplierCompany; ?></option>
                             <?php
                                 $query = "SELECT SUP_CODE, COMPANY FROM supplier";
                         

@@ -14,7 +14,7 @@
             try{
                 require_once("database.php");
                 
-                $query = "SELECT * FROM user_accounts where USERNAME = :username;";
+                $query = "SELECT * FROM user_accounts where USER_ACTIVE = 1 AND USERNAME = :username;";
     
                 $stmt = $pdo->prepare($query);
 

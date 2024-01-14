@@ -23,19 +23,22 @@
     $reqno;
     $created;
     $required;
+    $author;
 
     if(empty($row3)){
         $reqno = '';
         $created = '';
         $required = '';
+        $author2 = '';
     }
     else{
         $reqno = $row3["REQ_ID"];
         $created = $row3["REQ_DATE"];
         $required = $row3["REQ_DATEREQ"];
+        $author2 = $row3["REQ_AUTHOR"];
     }
 
-    $query2 = "SELECT REQ_STATUS FROM REQUISITION WHERE REQ_STATUS = 'PROCESSING' AND REQ_DATE = CURDATE() AND USER_ID = :userid";
+    $query2 = "SELECT REQ_STATUS FROM REQUISITION WHERE REQ_STATUS = 'PROCESSING' AND USER_ID = :userid";
 
     $stmt2 = $pdo->prepare($query2);
 
@@ -134,7 +137,7 @@
                         <div class="form-floating">
                             <select class="form-select" id="IDselect" required aria-label="Floating label select example" name="req-ID">
                             <?php
-                                $query2= "SELECT REQ_ID FROM REQUISITION WHERE REQ_STATUS = 'PROCESSING' AND REQ_DATE = CURDATE() AND USER_ID = :userid;";
+                                $query2= "SELECT REQ_ID FROM REQUISITION WHERE REQ_STATUS = 'PROCESSING' AND USER_ID = :userid;";
                         
                                 $stmt2 = $pdo->prepare($query2);
 
@@ -222,12 +225,13 @@
                     <div class="closing">
                         <div class="req_by">
                             <p>Requested by:</p>
-                            <span>Clark Mollejon</span>
+                            <span><?php echo $author2; ?></span>
                             <hr>
                         </div>
                         
                         <div class="req_by">
                             <p>Approved by:</p>
+                            <span></span>
                             <hr>
                         </div>
                     </div>

@@ -53,7 +53,7 @@
             <strong class="ribbon-content">USER'S ACCOUNT INFORMATION</strong>
         </h1>
 
-        <div class="row row-cols-5 row-cols-sm-1 g-4 card-image gap-5">
+        <div class="row row-cols-5 row-cols-sm-1 row-cols-md-3 g-4 card-image gap-5">
             <?php view_users(); ?>
         </div>
     </section>

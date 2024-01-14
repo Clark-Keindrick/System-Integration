@@ -14,8 +14,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trash</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/trash.css">
+    <link rel="stylesheet" href="css/deletedUsers.css">
     <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="ribbon.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel ="icon" href ="image/logo.png" type ="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -24,7 +25,7 @@
 </head>
 <body>
   <div class="header">
-      <div class="text">Trash</div>
+      <div class="text">Deleted Users</div>
       <div class="btn-group drpdwn">
           <button class="btn btn-info btn-sm dropdown-toggle badge btn-prof" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               BikePro Admin
@@ -43,81 +44,19 @@
       <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="dashboard.php"> <i class='bx bxs-home' style='color:#36a7ff'  ></i></a></li>
-              <li class="breadcrumb-item active" aria-current="page">Trash</li>
+              <li class="breadcrumb-item"><a href="trash.php">Trash</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Deleted Users</li>
           </ol>
       </nav>
   </div>
 
   <section class="home-section">
-      <div class="card text-center">
-          <div class="card-header bg-primary text-white">
-            History <i class='bx bx-time-five'></i>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">View Deleted Users</h5>
-            <p class="card-text">You can still retrieve all the users that you've been deleted.</p>
-            <a href="deleted_users.php" class="btn btn-primary">User's history</a>
-          </div>
-          <div class="card-footer text-muted">
-            2 days ago
-          </div>
-      </div>
-
-      <div class="card text-center">
-          <div class="card-header bg-info text-white">
-            History <i class='bx bx-time-five'></i>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">View Deleted Requisition</h5>
-            <p class="card-text">You can still retrieve all the user's requesition that you've been deleted.</p>
-            <a href="deleted_requisition.php" class="btn btn-info text-white">Requisition history</a>
-          </div>
-          <div class="card-footer text-muted">
-            2 days ago
-          </div>
-      </div>
-
-      <div class="card text-center">
-          <div class="card-header bg-danger text-white">
-            History <i class='bx bx-time-five'></i>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">View Deleted P.O Form</h5>
-            <p class="card-text">You can still retrieve all the P.O Form that you've been deleted.</p>
-            <a href="#" class="btn btn-danger">P.O history</a>
-          </div>
-          <div class="card-footer text-muted">
-            2 days ago
-          </div>
-      </div>
-
-      <div class="card text-center">
-          <div class="card-header bg-secondary text-white">
-            History <i class='bx bx-time-five'></i>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">View Deleted Items</h5>
-            <p class="card-text">You can still retrieve all the Inventory Items that you've been deleted.</p>
-            <a href="LLCdeleted_items.php" class="btn btn-secondary">Inventory history</a>
-          </div>
-          <div class="card-footer text-muted">
-            2 days ago
-          </div>
-      </div>
-
-      <div class="card text-center">
-          <div class="card-header bg-success text-white">
-            History <i class='bx bx-time-five'></i>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">View Deleted Sales</h5>
-            <p class="card-text">You can still retrieve all the Sales Information that you've been deleted.</p>
-            <a href="#" class="btn btn-success">Sales history</a>
-          </div>
-          <div class="card-footer text-muted">
-            2 days ago
-          </div>
-      </div>
+        <h1 class="ribbon">
+            <strong class="ribbon-content">DELETED USER'S ACCOUNT</strong>
+        </h1>
+        <div class="row row-cols-sm-1 row-cols-md-10 card-image">
+            <?php view_deleted_users(); ?>
+        </div>
   </section>
 
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">

@@ -1,17 +1,17 @@
 <?php 
-    $code = $_GET["supCode"];
+    $invID = $_GET["invID"];
      try{
         include "../../database.php";
         
-        $query = "UPDATE supplier SET SUP_ACTIVE = 0 WHERE SUP_CODE = :supcode";
+        $query = "UPDATE INVENTORY SET INV_ACTIVE = 1 WHERE INV_ID = :inventoryID";
 
         $stmt = $pdo->prepare($query);
 
-        $stmt->bindParam(":supcode", $code);
+        $stmt->bindParam(":inventoryID", $invID);
 
         $stmt->execute();
 
-        echo '<script>setTimeout(function () { window.location.href = "../supplier.php";}, 500);</script>';
+        echo '<script>setTimeout(function () { window.location.href = "../LLCdeleted_items.php";}, 500);</script>';
 
         $pdo = null;
         $stmt = null;

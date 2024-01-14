@@ -23,17 +23,6 @@
     $created;
     $required;
 
-    if(empty($row3)){
-        $reqno = '';
-        $created = '';
-        $required = '';
-    }
-    else{
-        $reqno = $row3["REQ_ID"];
-        $created = $row3["REQ_DATE"];
-        $required = $row3["REQ_DATEREQ"];
-    }
-
 ?>
 
 <!DOCTYPE html>
@@ -44,6 +33,8 @@
     <title>Request Status</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="general.css">
@@ -73,25 +64,7 @@
         </div>
     </main>
 
-    <div class="modal2 modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header2 modal-header bg-danger">
-                    <h5 class="modal-title modal-title2" id="staticBackdropLabel">Delete Request</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body modal-body2">
-                    Are you sure you want to delete this request?
-                </div>
-                <div class="modal-footer modal-footer2">
-                    <button type="button" class="btn btn-danger btn-yes" data-bs-dismiss="modal">Yes</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"  role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
             <div class="modal-header bg-primary text-white">
@@ -99,61 +72,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="modal-logo">
-                    <img src="dashboard-icons/logo.png" alt="">
-                </div>
-
-                <div class="headings">
-                    <h4><?php echo $company; ?></h4>
-                    <p><?php echo $staddress; ?></p>
-                    <p><?php echo $phone; ?></p>
-                    <p><?php echo $email; ?></p>
-                </div>
-
-                <h3>Requisition Form</h3>
-
-                <div class="salutation">
-                     <p>Requisition no. : <?php echo $reqno; ?></p>
-                     <p>Date created : <?php echo $created; ?></p>
-                     <p>Date required : <?php echo $required; ?></p>
-                </div>
-
-                <div class="table-modal">
-                    <div class="table-responsive-md mod-table mb-3">
-                        <table class="table table-bordered table-hover table-striped">
-                            <thead class="table-secondary">
-                                <tr>
-                                <th scope="col">Inventory #</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Unit</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr >
-                                    <td>fsdf</td>
-                                    <td>sdf</td>
-                                    <td>sdf</td>
-                                    <td>sdffsd</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="closing">
-                    <div class="req_by">
-                        <p>Requested by:</p>
-                        <span><?php echo $author ?></span>
-                        <hr>
-                    </div>
-                    
-                    <div class="req_by">
-                        <p>Approved by:</p>
-                        <span></span>
-                        <hr>
-                    </div>
-                </div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Exit</button>
@@ -180,5 +99,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
+
+    <script type='text/javascript'>
+        $(document).ready(function(){
+            $('.requestID').click(function(){
+                var reqid= $(this).data('id');
+                $.ajax({
+                    url: 'requestForm.php',
+                    type: 'post',
+                    data: {reqid: reqid},
+                    success: function(response){ 
+                        $('.modal-body').html(response); 
+                        $('#requestModal').modal('show'); 
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

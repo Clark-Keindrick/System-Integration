@@ -18,7 +18,7 @@ function register_user(){
         $pwd = filter_input(INPUT_POST,"pword", FILTER_SANITIZE_SPECIAL_CHARS);
         $confirmpwd = filter_input(INPUT_POST,"confirmPword", FILTER_SANITIZE_SPECIAL_CHARS);
         $pattern = '/^\d{11}$/';
-        $pattern2 = '/^[A-Za-z]+$/';
+        $pattern2 = '/^[A-Za-z\s]+$/';
 
         if(empty($firstname) || empty($lastname) || empty($contact) || empty($bdate) || empty($gender) || empty($username) || empty($pwd) || empty($confirmpwd) || empty($branch) || empty($_FILES['profpic'])){
             echo '<div class="alert alert-danger d-flex align-items-center reg-status" role="alert">
@@ -130,7 +130,7 @@ function user_table(){
     try{
         include "database.php";
         
-        $query = "SELECT * FROM user_accounts WHERE USER_STATUS = 'PENDING'";
+        $query = "SELECT * FROM user_accounts WHERE USER_ACTIVE = 1 AND USER_STATUS = 'PENDING'";
 
         $stmt = $pdo->prepare($query);
 
@@ -198,7 +198,7 @@ function user_table(){
 function user_count(){
     include "database.php";
 
-    $query = "SELECT COUNT(*) AS total_count FROM user_accounts WHERE user_status = 'APPROVED'";
+    $query = "SELECT COUNT(*) AS total_count FROM user_accounts WHERE user_active = 1 AND user_status = 'APPROVED'";
 
     $stmt = $pdo->prepare($query);
 
@@ -294,7 +294,7 @@ function view_users(){
     try{
         include "database.php";
         
-        $query = "SELECT * FROM user_accounts WHERE USER_STATUS = 'APPROVED'";
+        $query = "SELECT * FROM user_accounts WHERE USER_ACTIVE = 1 AND USER_STATUS = 'APPROVED'";
 
         $stmt = $pdo->prepare($query);
 
@@ -305,7 +305,7 @@ function view_users(){
         if(!empty($result)){
             foreach($result as $row){ 
                 if($row["USER_BRANCH"] != 'ADMIN'){
-                    $delete = '<div><a href="actions/denied_user.php?user_id='.$row['USER_ID'].'"><i class="bx bxs-trash" style="color:#ff0003"></i></a></div>';
+                    $delete = '<div><a href="actions/delete_user.php?user_id='.$row['USER_ID'].'"><i class="bx bxs-trash" style="color:#ff0003"></i></a></div>';
                 }
                 else{
                     $delete = '';
@@ -358,6 +358,131 @@ function view_users(){
     }
 }
 
+
+function view_reg_status(){
+    try{
+        include "database.php";
+        
+        $query = "SELECT * FROM user_accounts WHERE USER_ACTIVE = 1 AND (USER_STATUS = 'DENIED' OR USER_STATUS = 'PENDING')";
+
+        $stmt = $pdo->prepare($query);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+        if(!empty($result)){
+            foreach($result as $row){ 
+                echo '<div class="col img-container">
+                        <div class="card h-100" style="width: 24rem;">
+                            <img src="/ProfilePics/'.$row["USER_PIC"].'" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">'.$row["USER_FIRSTNAME"]. " ". $row["USER_LASTNAME"].'</h5>
+                                <div class="description mb-2">
+                                    <div class="card-container1"><p class="card-text"><b>User: </b>'.$row["USERNAME"].'</p></div>
+                                    <div class="card-container"><p class="card-text"><b>Pass: </b>!^%*&=-$#@</p></div>
+                                </div>
+                                <div class="description mb-2">
+                                    <div class="card-container1"><p class="card-text"><b>Contact: </b>'.$row["USER_PHONENUM"].'</p></div>
+                                    <div class="card-container"><p class="card-text"><b>Birthdate: </b>'.$row["USER_DOB"].'</p></div>
+                                </div>
+                                <div class="description">
+                                    <div class="card-container1"><p class="card-text"><b>Branch: </b>'.$row["USER_BRANCH"].'</p></div>
+                                    <div class="card-container"><p class="card-text"><b>Status: </b>'.$row["USER_STATUS"].'</p></div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">'.$row['USER_ID'].'</small>
+                                <div><a href="delete_request.php?userid='.$row['USER_ID'].'">DELETE</a></div>
+                            </div>
+                        </div>
+                    </div>';
+            }
+
+        }
+        else{
+            echo '<div class="alert alert-primary d-flex align-items-center user_alert" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div class="alert_label">
+                        No users available!
+                    </div>
+                </div>';
+        }
+        $pdo = null;
+        $stmt = null;
+    }
+    catch(PDOException $e){
+        echo '<div class="alert alert-primary d-flex align-items-center user_alert" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div class="alert_label">
+                        Query failed: '.$e->getMessage().' 
+                    </div>
+                </div>';
+    }
+}
+
+function view_deleted_users(){
+    try{
+        include "database.php";
+        
+        $query = "SELECT * FROM user_accounts WHERE USER_ACTIVE = 0 AND USER_STATUS = 'APPROVED'";
+
+        $stmt = $pdo->prepare($query);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+        if(!empty($result)){
+            foreach($result as $row){ 
+                echo '<div class="col img-container">
+                        <div class="card h-100" style="width: 22rem;">
+                            <img src="/ProfilePics/'.$row["USER_PIC"].'" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">'.$row["USER_FIRSTNAME"]. " ". $row["USER_LASTNAME"].'</h5>
+                                <div class="description mb-2">
+                                    <div class="card-container1"><p class="card-text"><b>User: </b>'.$row["USERNAME"].'</p></div>
+                                    <div class="card-container"><p class="card-text"><b>Pass: </b>!^%*&=-$#@</p></div>
+                                </div>
+                                <div class="description mb-2">
+                                    <div class="card-container1"><p class="card-text"><b>Contact: </b>'.$row["USER_PHONENUM"].'</p></div>
+                                    <div class="card-container"><p class="card-text"><b>Birthdate: </b>'.$row["USER_DOB"].'</p></div>
+                                </div>
+                                <div class="description">
+                                    <div class="card-container1"><p class="card-text"><b>Branch: </b>'.$row["USER_BRANCH"].'</p></div>
+                                    <div class="card-container"><p class="card-text"><b>Status: </b>'.$row["USER_STATUS"].'</p></div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">'.$row['USER_ID'].'</small>
+                                <div><a href="actions/retrieve_user.php?userid='.$row['USER_ID'].'">RETRIEVE</a></div>
+                            </div>
+                        </div>
+                    </div>';
+            }
+
+        }
+        else{
+            echo '<div class="alert alert-primary d-flex align-items-center user_alert" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div class="alert_label">
+                        No Deleted Users !
+                    </div>
+                </div>';
+        }
+        $pdo = null;
+        $stmt = null;
+    }
+    catch(PDOException $e){
+        echo '<div class="alert alert-primary d-flex align-items-center user_alert" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div class="alert_label">
+                        Query failed: '.$e->getMessage().' 
+                    </div>
+                </div>';
+    }
+}
+
 function update_photo($session_name){
     if (isset($_POST['update_pic']) && isset($_FILES['profilePhoto'])) {
         $img_name = $_FILES['profilePhoto']['name'];
@@ -388,7 +513,7 @@ function update_photo($session_name){
                     try{
                         include "database.php";
 
-                        $query = "UPDATE user_accounts SET USER_PIC = :newpic WHERE USERNAME = :username;";
+                        $query = "UPDATE user_accounts SET USER_PIC = :newpic WHERE USER_ACTIVE = 1 AND USERNAME = :username;";
     
                         $stmt = $pdo->prepare($query);
 
@@ -682,7 +807,6 @@ function supplier_table(){
                         <td>'.$row["SUP_EMAIL"].'</td>
                         <td>
                             <a href="supplier.php?supCode='.$row['SUP_CODE'].'"><i class="bx bxs-edit" style="color:#06c700"></i></a>
-                            <a href="actions/remove_supplier.php?supCode='.$row['SUP_CODE'].'" ><i class="bx bxs-trash" style="color:#fb0000"></i></a>
                         </td>
                      </tr>';
             }
@@ -903,6 +1027,24 @@ function total_items($branch){
     return $total;
 }
 
+function total_deleted_items($branch){
+    include "database.php";
+
+    $query = "SELECT COUNT(*) as total_count FROM INVENTORY WHERE INV_BRANCH = :branch AND INV_ACTIVE = 0";
+
+    $stmt = $pdo->prepare($query);
+
+    $stmt->bindParam(":branch", $branch);
+
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC); 
+
+    $total = $result['total_count'];
+
+    return $total;
+}
+
 function inventory_item($userID, $branch){
     try{
         include "../database.php";
@@ -941,7 +1083,7 @@ function inventory_item($userID, $branch){
 
                 if($actions["USER_BRANCH"] == "ADMIN"){
                     $viewAction = '<a href="edit_item.php?invID='.$row['INV_ID'].'"><i class="bx bxs-edit" style="color:#06c700"></i></a>';
-                    $viewAction2 = ' <a href="actions/remove_item.php?invID='.$row['INV_ID'].'"><i class="bx bxs-trash bxs-trash2" style="color:#ff0003"></i></a>';
+                    $viewAction2 = '<a href="actions/remove_item.php?invID='.$row['INV_ID'].'"><i class="bx bxs-trash bxs-trash2" style="color:#ff0003"></i></a>';
                 }
                 else{
                     $viewAction = '';
@@ -993,6 +1135,99 @@ function inventory_item($userID, $branch){
                 </div>';
     }
 }
+
+
+function deleted_inventory_item($userID, $branch){
+    try{
+        include "../database.php";
+        
+        $query = "SELECT * FROM inventory WHERE INV_BRANCH = :branch AND INV_ACTIVE = 0 ORDER BY INV_QOH ASC";
+
+        $stmt = $pdo->prepare($query);
+
+        $stmt->bindParam(":branch", $branch);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+        if(!empty($result)){
+            foreach($result as $row){ 
+                if($row["INV_QOH"] > 0  && $row["INV_QOH"] <= 8){
+                    $border = 'border-warning';
+                }
+                else if($row["INV_QOH"] == 0){
+                    $border = 'border-danger';
+                }
+                else{
+                    $border = 'border-success';
+                }
+
+                $query = "SELECT * FROM user_accounts WHERE USER_ID = :userID";
+
+                $stmt = $pdo->prepare($query);
+
+                $stmt->bindParam(":userID", $userID);
+
+                $stmt->execute();
+
+                $actions = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if($actions["USER_BRANCH"] == "ADMIN"){
+                    $viewAction = '<a href="actions/retrieve_item.php?invID='.$row['INV_ID'].'"><img src="image/return-box.png" alt="" class="return"></a>';
+                    $viewAction2 = '<a href="actions/delete_item.php?invID='.$row['INV_ID'].'"><i class="bx bxs-trash bxs-trash2" style="color:#ff0003"></i></a>';
+                }
+                else{
+                    $viewAction = '';
+                    $viewAction2 = '';
+                }
+
+                echo '<div class="card '.$border.' bg-light border-3" style="width: 19rem;">
+                            <div class="card-header bg-transparent border-success"> 
+                                '.$viewAction.'
+                                <p>'.$row["INV_DESCRIPTION"].'</p>
+                                '.$viewAction2.'
+                            </div>
+                            <img src="../Inventory_Pic/'.$row["INV_PIC"].'" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <div class="first-row">
+                                    <p class="card-text">ID: <span>'.$row["INV_ID"].'</span></p>
+                                    <p class="card-text">Unit: <span>'.$row["INV_UNIT"].'</span></p>
+                                </div>
+                                <div class="second-row">
+                                    <p class="card-text">Price: <span>&#8369;'.$row["INV_PRICE"].'</span></p>
+                                    <p class="card-text">Stocks: <span>'.$row["INV_QOH"].'</span></p>
+                                </div>
+                                <div class="third-row">
+                                    <p class="card-text">Supplier: <span>'.$row["SUP_CODE"].'</span></p>
+                                    <p class="card-text">Updated: <span>'.$row["INV_INDATE"].'</span></p>
+                                </div>
+                            </div>
+                        </div>';
+            }
+
+        }
+        else{
+            echo '<div class="alert alert-primary d-flex align-items-center user_alert" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div class="alert_label">
+                       There is no deleted Inventory item !
+                    </div>
+                </div>';
+        }
+        $pdo = null;
+        $stmt = null;
+    }
+    catch(PDOException $e){
+        echo '<div class="alert alert-primary d-flex align-items-center user_alert" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div class="alert_label">
+                        Query failed: '.$e->getMessage().' 
+                    </div>
+                </div>';
+    }
+}
+
 
 
 function update_inventory($itemsID){
@@ -1127,11 +1362,27 @@ function requisition_count($userid2){
     return $total;
 }
 
+function PO_count(){
+    include "database.php";
+
+    $query = "SELECT COUNT(*) AS total_count FROM PURCHASE_ORDER WHERE PO_ACTIVE = 1";
+
+    $stmt = $pdo->prepare($query);
+
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC); 
+
+    $total = $result['total_count'];
+
+    return $total;
+}
+
 
 function admin_requisition_count(){
     include "database.php";
 
-    $query = "SELECT COUNT(*) AS total_count FROM REQUISITION WHERE REQ_ACTIVE = 1 AND REQ_STATUS = 'PENDING'";
+    $query = "SELECT COUNT(*) AS total_count FROM REQUISITION WHERE (REQ_ACTIVE <> 0 AND REQ_ACTIVE <> 4) AND REQ_STATUS <> 'PROCESSING'";
 
     $stmt = $pdo->prepare($query);
 
@@ -1148,7 +1399,7 @@ function admin_requisition_count(){
 function requisition_info($userID){
     include "database.php";
 
-    $query = "SELECT * FROM REQUISITION WHERE REQ_STATUS = 'PROCESSING' AND USER_ID = :userID AND REQ_DATE = CURDATE()";
+    $query = "SELECT * FROM REQUISITION WHERE REQ_ACTIVE = 1 AND REQ_STATUS = 'PROCESSING' AND USER_ID = :userID AND REQ_DATE = CURDATE()";
 
     $stmt = $pdo->prepare($query);
 
@@ -1202,8 +1453,8 @@ function requisition_table($userid2){
                         <td>'.$row["REQ_STATUS"].'</td>
                         <td>'.$row["USER_ID"].'</td>
                         <td>
-                            <a href="request-made.php?reqid='.$row["REQ_ID"].'" data-bs-toggle="modal" data-bs-target="#requestModal"><img src="image/eye.png" alt="..."></a>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bx bxs-trash" ></i></a>
+                            <a href="#" data-id='.$row["REQ_ID"].' class="requestID"><img src="dashboard-icons/eye.png" alt="..."></a>
+                            <a href="#"><i class="bx bxs-trash" ></i></a>
                         </td>
                      </tr>';
             }
@@ -1240,7 +1491,7 @@ function admin_requisition_table(){
     try{
         include "../database.php";
         
-        $query = "SELECT * FROM REQUISITION WHERE REQ_ACTIVE = 1 AND REQ_STATUS = 'PENDING'";
+        $query = "SELECT * FROM REQUISITION WHERE REQ_STATUS <> 'PROCESSING' AND (REQ_ACTIVE <> 0 AND REQ_ACTIVE <> 4)";
 
         $stmt = $pdo->prepare($query);
 
@@ -1274,8 +1525,8 @@ function admin_requisition_table(){
                         <td>'.$row["REQ_STATUS"].'</td>
                         <td>'.$row["USER_ID"].'</td>
                         <td>
-                            <a href="actions/viewreq.php" data-bs-toggle="modal" data-bs-target="#requestModal"><img src="image/eye.png" alt="..." class="eyes"></a>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bx bxs-trash" ></i></a>
+                            <a href="#" data-id='.$row["REQ_ID"].' class="requestID"><img src="image/eye.png" alt="..." class="eyes"></a>
+                            <a href="actions/delete_req.php?reqID='.$row["REQ_ID"].'"><i class="bx bxs-trash" ></i></a>
                         </td>
                      </tr>';
             }
@@ -1306,6 +1557,140 @@ function admin_requisition_table(){
             </div>';
     }
 }
+
+function PO_requisition_table(){
+    try{
+        include "../database.php";
+        
+        $query = "SELECT * FROM REQUISITION WHERE REQ_STATUS <> 'APPROVED' AND (REQ_ACTIVE <> 0 AND REQ_ACTIVE <> 4)";
+
+        $stmt = $pdo->prepare($query);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+        if(!empty($result)){
+            ?>
+             <table class="table table-hover table-striped text-center">
+                <thead class="table-primary">
+                  <tr>
+                    <th scope="col">REQUEST ID</th>
+                    <th scope="col">DATE</th>
+                    <th scope="col">DATE REQUIRED</th>
+                    <th scope="col">AUTHOR</th>
+                    <th scope="col">STATUS</th>
+                    <th scope="col">USER ID</th>
+                    <th scope="col">ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody>
+            <?php
+
+            foreach($result as $row){
+                echo '<tr >
+                        <td>'.$row["REQ_ID"].'</td>
+                        <td>'.$row["REQ_DATE"].'</td>
+                        <td>'.$row["REQ_DATEREQ"].'</td>
+                        <td>'.$row["REQ_AUTHOR"].'</td>
+                        <td>'.$row["REQ_STATUS"].'</td>
+                        <td>'.$row["USER_ID"].'</td>
+                        <td>
+                            <a href="#" data-id='.$row["REQ_ID"].' class="requestID"><img src="image/eye.png" alt="..." class="eyes"></a>
+                        </td>
+                     </tr>';
+            }
+            echo '</tbody>';
+            echo '</table>';
+        }
+        $pdo = null;
+        $stmt = null;
+    }
+    catch(PDOException $e){
+        echo '<div class="alert-box">
+                <div class="alert alert-primary d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div class="alert_label">
+                         '.$e->getMessage().'
+                    </div>
+                </div>
+            </div>';
+    }
+}
+
+
+
+function deleted_requisition_table(){
+    try{
+        include "../database.php";
+        
+        $query = "SELECT * FROM REQUISITION WHERE (REQ_ACTIVE = 0 OR REQ_ACTIVE = 4) AND REQ_STATUS <> 'PROCESSING'";
+
+        $stmt = $pdo->prepare($query);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+        if(!empty($result)){
+            ?>
+             <table class="table table-hover table-striped text-center">
+                <thead class="table-warning">
+                  <tr>
+                    <th scope="col">REQUEST ID</th>
+                    <th scope="col">DATE</th>
+                    <th scope="col">DATE REQUIRED</th>
+                    <th scope="col">AUTHOR</th>
+                    <th scope="col">STATUS</th>
+                    <th scope="col">USER ID</th>
+                    <th scope="col">ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody>
+            <?php
+
+            foreach($result as $row){
+                echo '<tr >
+                        <td>'.$row["REQ_ID"].'</td>
+                        <td>'.$row["REQ_DATE"].'</td>
+                        <td>'.$row["REQ_DATEREQ"].'</td>
+                        <td>'.$row["REQ_AUTHOR"].'</td>
+                        <td>'.$row["REQ_STATUS"].'</td>
+                        <td>'.$row["USER_ID"].'</td>
+                        <td>
+                            <a href="#" data-id='.$row["REQ_ID"].' class="requestID"><img src="image/eye.png" alt="..." class="eyes"></a>
+                            <a href="actions/retrieve_req.php?reqID='.$row["REQ_ID"].'" class="retrieve">RETRIVE</a>
+                        </td>
+                     </tr>';
+            }
+            echo '</tbody>';
+            echo '</table>';
+        }
+        else{
+            echo '<div class="alert-box">
+                    <div class="alert alert-primary d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                        <div class="alert_label">
+                            No deleted requisitions available !
+                        </div>
+                    </div>
+                </div>';
+        }
+        $pdo = null;
+        $stmt = null;
+    }
+    catch(PDOException $e){
+        echo '<div class="alert-box">
+                <div class="alert alert-primary d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div class="alert_label">
+                         '.$e->getMessage().'
+                    </div>
+                </div>
+            </div>';
+    }
+}
+
 
 function request_items(){
     if(isset($_POST["req_item"])) {
@@ -1381,6 +1766,7 @@ function request_items(){
         echo "";
     }
 }
+
 
 
 function request_item_list($userID){
@@ -1493,6 +1879,184 @@ function view_request_item_list($userID){
                         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
                         <div class="alert_label">
                             No requisitions available !
+                        </div>
+                    </div>
+                </div>';
+        }
+        $pdo = null;
+        $stmt = null;
+    }
+    catch(PDOException $e){
+        echo '<div class="alert-box">
+                <div class="alert alert-primary d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div class="alert_label">
+                         '.$e->getMessage().'
+                    </div>
+                </div>
+            </div>';
+    }
+}
+
+
+
+function add_POForm(){
+    if(isset($_POST["addPO"])) {
+        $shipvia = filter_input(INPUT_POST, "shipVia", FILTER_SANITIZE_SPECIAL_CHARS);
+        $shipvia = trim($shipvia);
+        $shipvia = ucwords($shipvia);
+        $FOB = filter_input(INPUT_POST, "FOB", FILTER_SANITIZE_SPECIAL_CHARS);
+        $FOB = trim($FOB);
+        $FOB = ucwords($FOB);
+        $shipterms = filter_input(INPUT_POST, "terms", FILTER_SANITIZE_SPECIAL_CHARS);
+        $shipterms = trim($shipterms);
+        $shipterms = ucwords($shipterms);
+        $reqid = filter_input(INPUT_POST,"REQID", FILTER_SANITIZE_NUMBER_INT);
+        $reqid = trim($reqid);
+
+        if(empty($shipvia) || empty($FOB) || empty($shipterms) || empty($reqid)){
+            echo '<div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    Something went wrong!
+                  </div> ';
+        }else{
+            try{
+                include "../database.php";
+                
+                $query = "INSERT INTO PURCHASE_ORDER (PO_DATE, SHIP_VIA, FOB, SHIPPING_TERMS, REQ_ID) VALUES (CURDATE(), ?, ?, ?, ?);";
+
+                $stmt = $pdo->prepare($query);
+
+                $stmt->execute([$shipvia, $FOB, $shipterms, $reqid]);
+                
+                echo '<script>setTimeout(function () { window.location.href = "dashboard.php";});</script>';
+                echo '<script>setTimeout(function () { window.location.href = "Purchase.php";});</script>';
+        
+            }
+            catch(PDOException $e){
+                echo '<div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                            '.$e->getMessage().'
+                    </div> ';
+            }
+        }
+    }
+}
+
+
+function Purchase_items(){
+    if(isset($_POST["addPoItem"])) {
+        include "../database.php";
+        $quantity = filter_input(INPUT_POST,"itemQTY", FILTER_SANITIZE_NUMBER_INT);
+        $quantity = trim($quantity);
+        $itemID = filter_input(INPUT_POST,"itemID", FILTER_SANITIZE_NUMBER_INT);
+        $itemID = trim($itemID);
+        $unit = filter_input(INPUT_POST, "itemUnit", FILTER_SANITIZE_SPECIAL_CHARS);
+        $unit = trim($unit);
+        $poNumber = filter_input(INPUT_POST,"poNumber", FILTER_SANITIZE_NUMBER_INT);
+        $poNumber = trim($poNumber);
+        $price = filter_input(INPUT_POST, "itemPrice", FILTER_VALIDATE_FLOAT);
+        $price = trim($price);
+
+        if(empty($quantity) || empty($itemID) || empty($unit) || empty($poNumber) || empty($price)){
+            echo '<div class="alert-box">
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        Something is missing !
+                    </div>
+                </div>';
+        }else if($quantity <= 0 || $price <= 0){
+            echo '<div class="alert-box">
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                            Numbers that are zero and below is not acceptable!
+                    </div>
+                </div>';
+        }else{
+            try{
+                include "database.php";
+                
+                $query = "INSERT INTO PO_ITEM(PO_ITEM_QTY, PO_ITEM_UNIT, PO_ITEM_PRICE, INV_ID, PO_NO)
+                            VALUES (?, ?, ?, ?, ?);";
+
+                $stmt = $pdo->prepare($query);
+
+                $stmt->execute([$quantity, $unit, $price, $itemID, $poNumber]);
+
+
+                echo '<div class="alert-box">
+                        <div class="alert alert-success d-flex align-items-center reg-status" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                                Saved Successfully!
+                        </div>
+                    </div>';
+
+                echo '<script>setTimeout(function () { window.location.href = "Purchase.php";}, 500);</script>';
+
+            }
+            catch(PDOException $e){
+                echo '<div class="alert-box">
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                             '.$e->getMessage().'
+                        </div>
+                    </div>';
+            }
+        }
+
+    }else{
+        echo "";
+    }
+}
+
+
+function PO_item_list(){
+    try{
+        include "database.php";
+        
+        $query = "SELECT * FROM PURCHASE_ORDER, PO_ITEM WHERE PURCHASE_ORDER.PO_NO = PO_ITEM.PO_NO AND PO_ACTIVE = 1 AND PO_STATUS = 'PROCESSING'";
+
+        $stmt = $pdo->prepare($query);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+        if(!empty($result)){
+            ?>
+             <table class="table table-bordered table-hover table-striped">
+                <thead class="table-success">
+                    <tr>
+                    <th scope="col">PO ITEM #</th>
+                    <th scope="col">QUANTITY</th>
+                    <th scope="col">UNIT</th>
+                    <th scope="col">PRICE</th>
+                    <th scope="col">INVENTORY ID</th>
+                    <th scope="col">PO #</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <?php
+
+            foreach($result as $row){
+                echo '<tr >
+                        <td>'.$row["PO_ITEM_NO"].'</td>
+                        <td>'.$row["PO_ITEM_QTY"].'</td>
+                        <td>'.$row["PO_ITEM_UNIT"].'</td>
+                        <td>'.$row["PO_ITEM_PRICE"].'</td>
+                        <td>'.$row["INV_ID"].'</td>
+                        <td>'.$row["PO_NO"].'</td>
+                     </tr>';
+            }
+            echo '</tbody>';
+            echo '</table>';
+        }
+        else{
+            echo '<div class="alert-box">
+                    <div class="alert alert-primary d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                        <div class="alert_label">
+                            No P.O Items available !
                         </div>
                     </div>
                 </div>';

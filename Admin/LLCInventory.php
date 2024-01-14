@@ -61,8 +61,8 @@
             <h3 class="inv_label">LLC Branch Inventory</h3>
             <div class="search-items searchbox">
                 <form class="d-flex">
-                    <input class="form-control me-3" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <input class="form-control me-3" type="search" placeholder="Search" aria-label="Search" name="searchBar">
+                    <button class="btn btn-outline-success" type="submit" name="searchBTN">Search</button>
                 </form>
             </div>
             <h3 class="tot_item_label">Total Items: <?php echo $total_items; ?></h3>

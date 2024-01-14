@@ -14,6 +14,7 @@
     $total_user = user_count();
     $total_branch = branch_count();
     $total_request = admin_requisition_count();
+    $total_PO = PO_count();
 ?>
 
 <!DOCTYPE html>
@@ -65,7 +66,7 @@
                     </div>
                     <div class="panels-stats">
                         <div class="panels-stats-box">
-                            <p class="stats-num">10</p>
+                            <p class="stats-num"><?php echo $total_PO; ?></p>
                             <p class="stats-label">P.O's Form made</p>
                         </div>
                     </div>

@@ -12,10 +12,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Requsitions</title>
+  <title>Trash</title>
   <!-- Link Styles -->
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/staff_req.css">
+  <link rel="stylesheet" href="css/deleted_req.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="ribbon.css">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -26,7 +26,7 @@
 </head>
 <body>
     <div class="header">
-        <div class="text">Requisition Page</div>
+        <div class="text">Deleted Staff's Requisition</div>
         <div class="btn-group drpdwn">
             <button class="btn btn-info btn-md dropdown-toggle badge" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 BikePro Admin
@@ -45,30 +45,34 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="dashboard.php"> <i class='bx bxs-home' style='color:#36a7ff'  ></i></a></li>
-                <li class="breadcrumb-item active" aria-current="page">Requsitions</li>
+                <li class="breadcrumb-item active" aria-current="page">Trash</li>
             </ol>
         </nav>
     </div>
     <main class="home-section">
         <h1 class="ribbon">
-            <strong class="ribbon-content">STAFF'S REQUISITONS</strong>
+            <strong class="ribbon-content">DELETED STAFF'S REQUISITONS</strong>
         </h1>
 
         <div class="req_table table-responsive-md">
-            <?php admin_requisition_table(); ?>
+            <?php deleted_requisition_table(); ?>
         </div>
     </main>
 
     <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="exampleModalLabel">Requisition from Lapu-Lapu Branch</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    
-                </div>
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Requisition from Lapu-Lapu Branch</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-yes">APPROVE</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">DECLINE</button>
+            </div>
             </div>
         </div>
     </div>
@@ -85,23 +89,6 @@
                     data: {reqid: reqid},
                     success: function(response){ 
                         $('.modal-body').html(response); 
-                        $('#requestModal').modal('show'); 
-                    }
-                });
-            });
-        });
-    </script>
-
-<script type='text/javascript'>
-        $(document).ready(function(){
-            $('.requestID').click(function(){
-                var reqid= $(this).data('id');
-                $.ajax({
-                    url: 'modalFooter.php',
-                    type: 'post',
-                    data: {reqid: reqid},
-                    success: function(response){ 
-                        $('.modal-footer').html(response); 
                         $('#requestModal').modal('show'); 
                     }
                 });
@@ -130,4 +117,4 @@
 
     <script src="script.js"></script>
 </body>
-</html>
+</html>   
