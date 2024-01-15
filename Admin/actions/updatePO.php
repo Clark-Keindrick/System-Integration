@@ -2,7 +2,7 @@
     try{
     include "../../database.php";
     
-    $query = "UPDATE PURCHASE_ORDER SET PO_STATUS = 'PRINTABLE' WHERE PO_STATUS = 'PROCESSING'";
+    $query = "UPDATE PURCHASE_ORDER SET PO_STATUS = 'DOWNLOADABLE' WHERE PO_STATUS = 'PROCESSING'";
 
     $stmt = $pdo->prepare($query);
 

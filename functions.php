@@ -211,6 +211,24 @@ function user_count(){
     return $total;
 }
 
+function total_PO_Payment($poNum){
+    include "database.php";
+
+    $query = "SELECT SUM(PO_ITEM_QTY * PO_ITEM_PRICE) AS Total_PO FROM PO_ITEM WHERE PO_NO = :ponum";
+
+    $stmt = $pdo->prepare($query);
+
+    $stmt->bindParam(":ponum", $poNum );
+
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC); 
+
+    $total = $result['Total_PO'];
+
+    return $total;
+}
+
 function branch_count(){
     include "database.php";
 
@@ -288,6 +306,25 @@ function business_data(){
 
     return $result;
 }
+
+
+function PO_details($poNum){
+    include "database.php";
+
+    $query = "SELECT DISTINCT SUP_NAME, COMPANY, SUP_ADDRESS, SUP_EMAIL FROM SUPPLIER, INVENTORY, PO_ITEM 
+              WHERE SUPPLIER.SUP_CODE = INVENTORY.SUP_CODE AND INVENTORY.INV_ID = PO_ITEM.INV_ID AND PO_ITEM.PO_NO = :ponum";
+
+    $stmt = $pdo->prepare($query);
+
+    $stmt->bindParam(":ponum", $poNum);
+
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC); 
+
+    return $result;
+}
+
 
 
 function view_users(){
@@ -373,6 +410,12 @@ function view_reg_status(){
 
         if(!empty($result)){
             foreach($result as $row){ 
+                if($row["USER_STATUS"] == "DENIED"){
+                    $delBTN = '<div><a href="delete_request.php?userid='.$row['USER_ID'].'">DELETE</a></div>';
+                }
+                else{
+                    $delBTN = '';
+                }
                 echo '<div class="col img-container">
                         <div class="card h-100" style="width: 24rem;">
                             <img src="/ProfilePics/'.$row["USER_PIC"].'" class="card-img-top" alt="...">
@@ -393,7 +436,7 @@ function view_reg_status(){
                             </div>
                             <div class="card-footer">
                                 <small class="text-muted">'.$row['USER_ID'].'</small>
-                                <div><a href="delete_request.php?userid='.$row['USER_ID'].'">DELETE</a></div>
+                                '.$delBTN.'
                             </div>
                         </div>
                     </div>';
@@ -2057,6 +2100,153 @@ function PO_item_list(){
                         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
                         <div class="alert_label">
                             No P.O Items available !
+                        </div>
+                    </div>
+                </div>';
+        }
+        $pdo = null;
+        $stmt = null;
+    }
+    catch(PDOException $e){
+        echo '<div class="alert-box">
+                <div class="alert alert-primary d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div class="alert_label">
+                         '.$e->getMessage().'
+                    </div>
+                </div>
+            </div>';
+    }
+}
+
+function PO_Form_table(){
+    try{
+        include "../database.php";
+        
+        $query = "SELECT * FROM PURCHASE_ORDER WHERE PO_ACTIVE = 1 AND PO_STATUS = 'DOWNLOADABLE'";
+
+        $stmt = $pdo->prepare($query);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+        if(!empty($result)){
+            ?>
+             <table class="table table-hover table-striped text-center">
+                <thead class="table-primary">
+                <tr>
+                    <th scope="col">PO #</th>
+                    <th scope="col">DATE</th>
+                    <th scope="col">SHIP VIA</th>
+                    <th scope="col">FOB</th>
+                    <th scope="col">SHIPPING TERMS</th>
+                    <th scope="col">STATUS</th>
+                    <th scope="col">REQUEST ID</th>
+                    <th scope="col">ACTIONS</th>
+                </tr>
+                </thead>
+                <tbody>
+            <?php
+
+            foreach($result as $row){
+                echo '<tr >
+                        <td>'.$row["PO_NO"].'</td>
+                        <td>'.$row["PO_DATE"].'</td>
+                        <td>'.$row["SHIP_VIA"].'</td>
+                        <td>'.$row["FOB"].'</td>
+                        <td>'.$row["SHIPPING_TERMS"].'</td>
+                        <td>'.$row["PO_STATUS"].'</td>
+                        <td>'.$row["REQ_ID"].'</td>
+                        <td>
+                            <a href="#" data-id='.$row["PO_NO"].' class="PurchaseNO"><img src="image/eye.png" alt="..."></a>
+                            <a href="actions/deletePOform.php?poNUM='.$row["PO_NO"].'"><i class="bx bx-x"></i></a>
+                        </td>
+                     </tr>';
+            }
+            echo '</tbody>';
+            echo '</table>';
+        }
+        else{
+            echo '<div class="alert-box">
+                    <div class="alert alert-primary d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                        <div class="alert_label">
+                            No Purchase Order Form Available !
+                        </div>
+                    </div>
+                </div>';
+        }
+        $pdo = null;
+        $stmt = null;
+    }
+    catch(PDOException $e){
+        echo '<div class="alert-box">
+                <div class="alert alert-primary d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div class="alert_label">
+                         '.$e->getMessage().'
+                    </div>
+                </div>
+            </div>';
+    }
+}
+
+
+function Deleted_PO_Form_table(){
+    try{
+        include "../database.php";
+        
+        $query = "SELECT * FROM PURCHASE_ORDER WHERE PO_ACTIVE = 0";
+
+        $stmt = $pdo->prepare($query);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+        if(!empty($result)){
+            ?>
+             <table class="table text-center table-bordered border-dark">
+                <thead>
+                <tr>
+                    <th scope="col">PO #</th>
+                    <th scope="col">DATE</th>
+                    <th scope="col">SHIP VIA</th>
+                    <th scope="col">FOB</th>
+                    <th scope="col">SHIPPING TERMS</th>
+                    <th scope="col">STATUS</th>
+                    <th scope="col">REQUEST ID</th>
+                    <th scope="col">ACTIONS</th>
+                </tr>
+                </thead>
+                <tbody>
+            <?php
+
+            foreach($result as $row){
+                echo '<tr >
+                        <td>'.$row["PO_NO"].'</td>
+                        <td>'.$row["PO_DATE"].'</td>
+                        <td>'.$row["SHIP_VIA"].'</td>
+                        <td>'.$row["FOB"].'</td>
+                        <td>'.$row["SHIPPING_TERMS"].'</td>
+                        <td>'.$row["PO_STATUS"].'</td>
+                        <td>'.$row["REQ_ID"].'</td>
+                        <td>
+                            <a href="#" data-id='.$row["PO_NO"].' class="PurchaseNO"><img src="image/eye.png" alt="..." ></a>
+                            <a href="actions/retrievePOform.php?poNUM='.$row["PO_NO"].'" class="retrieve">RETRIEVE</a>
+                        </td>
+                     </tr>';
+            }
+            echo '</tbody>';
+            echo '</table>';
+        }
+        else{
+            echo '<div class="alert-box">
+                    <div class="alert alert-primary d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                        <div class="alert_label">
+                            No Deleted Purchase Order Form Available !
                         </div>
                     </div>
                 </div>';

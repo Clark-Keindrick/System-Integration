@@ -21,6 +21,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <link rel ="icon" href ="image/logo.png" type ="image/x-icon">
 </head>
 <body>
@@ -54,180 +55,18 @@
         </h1>
 
         <div class="inv_table table-responsive-md">
-            <table class="table table-hover table-striped text-center">
-                <thead class="table-primary">
-                <tr>
-                    <th scope="col">REQUEST ID</th>
-                    <th scope="col">REQUISITIONER</th>
-                    <th scope="col">DATE</th>
-                    <th scope="col">SUPPLIER CODE</th>
-                    <th scope="col">ACTION</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr >
-                        <td>57093</td>
-                        <td>CLARK MOLLEJON</td>
-                        <td>11/18/2023</td>
-                        <td>20395</td>
-                        <td>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#poForm"><img src="image/eye.png" alt="..."></a>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#POdelete"><i class='bx bx-x'></i></a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>57094</td>
-                        <td>JOHN ALBERT TORREON</td>
-                        <td>10/23/2023</td>
-                        <td>20396</td>
-                        <td>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#poForm"><img src="image/eye.png" alt="..."></a>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#POdelete"><i class='bx bx-x'></i></a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>67095</td>
-                        <td>BRYAN RACOMA</td>
-                        <td>12/23/2023</td>
-                        <td>20397</td>
-                        <td>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#poForm"><img src="image/eye.png" alt="..."></a>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#POdelete"><i class='bx bx-x'></i></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <?php PO_Form_table(); ?>
         </div>
 
         <div class="modal fade modal1" id="poForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="poFormLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header modal-header1 bg-info">
-                        <h5 class="modal-title modal-title1" id="poFormLabel">Print P.O Form ?</h5>
+                        <h5 class="modal-title modal-title1" id="poFormLabel">Download P.O Form ?</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body modal-body1">
-                        <div>
-                            <div class="POheader mb-4">
-                                <div class="compName">
-                                    <img src="image/logo.png" alt="...">
-                                    <h3>BikePro Bicycle Shop</h3>
-                                    <p>St. Address: <span>Babag II Road, Lapu-Lapu City</span></p>
-                                    <p>Contact #: <span>09165376140</span></p>
-                                </div>
-                                <div class="poDate">
-                                    <h3 class="poTitle">PURCHASE ORDER</h3>
-                                    <div class="poDate2"><p>Date: <span>12/31/2023</span></p></div>
-                                    <div class="poDate2"><p>PO #: <span>657201</span></p></div>
-                                </div>
-                            </div>
-
-                            <div class="POaddress">
-                                <div class="vendor">
-                                    <h4 class="adrslbl">VENDOR</h4>
-                                    <p>Company: <span>Cebu Kent Cycle</span></p>
-                                    <p>Vendor name: <span>Lucio Katigbak</span></p>
-                                    <p>Address: <span>Maugikay, Mandaue City</span></p>
-                                    <p>Vendor name: <span>09279815165</span></p>
-                                </div>
-                                <div class="shipto">
-                                    <h4 class="adrslbl">SHIP TO</h4>
-                                    <p>Name: <span>12/31/2023</span></p>
-                                    <p>Company: <span>657201</span></p>
-                                    <p>St. Address: <span>Babag II Road, Lapu-Lapu City</span></p>
-                                    <p>Contact #: <span>09165376140</span></p>
-                                </div>
-                            </div>
-
-                            <div class="table-responsive-md tbl-details">
-                                <table class="table text-center table-bordered border-dark">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">REQUESITIONER</th>
-                                        <th scope="col">SHIP VIA</th>
-                                        <th scope="col">F.O.B.</th>
-                                        <th scope="col">SHIPPING TERMS</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr >
-                                            <td>CLARK MOLLEJON</td>
-                                            <td>Air & Land</td>
-                                            <td>Shipping Point</td>
-                                            <td>Cost, Insurance & Freight</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="table-responsive-md tbl-details">
-                                <table class="table text-center table-bordered border-dark">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">ITEM #</th>
-                                        <th scope="col">DESCRIPTION</th>
-                                        <th scope="col">QUANTITY</th>
-                                        <th scope="col">PRICE</th>
-                                        <th scope="col">UNIT</th>
-                                        <th scope="col">TOTAL</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr >
-                                            <td>1010</td>
-                                            <td>Bar Take T-35 Pink</td>
-                                            <td>5</td>
-                                            <td>&#8369;122.00</td>
-                                            <td>Pairs</td>
-                                            <td>&#8369;610.00</td>
-                                        </tr>
-
-                                        <tr >
-                                            <td>1012</td>
-                                            <td>CST Tire 700X25C</td>
-                                            <td>12</td>
-                                            <td>&#8369;345.00</td>
-                                            <td>Pairs</td>
-                                            <td>&#8369;4140.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="POfooter">
-                                <div class="comment">
-                                    <div class="comment-title">
-                                        <p>Comments or Special Instructions</p>
-                                    </div>
-                                </div>
-
-                                <div class="POsubtotal">
-                                    <div class="subtotals">
-                                        <p>SUBTOTAL</p>
-                                        <p>&#8369;4750.00</p>
-                                    </div>
-                                    <div class="subtotals">
-                                        <p>TAX</p>
-                                        <p>-</p>
-                                    </div>
-                                    <div class="subtotals">
-                                        <p>SHIPPING</p>
-                                        <p>-</p>
-                                    </div>
-                                    <div class="subtotals">
-                                        <p>OTHER</p>
-                                        <p>-</p>
-                                    </div>
-                                    <hr>
-                                    <div class="subtotals">
-                                        <p>TOTAL</p>
-                                        <p>&#8369;4750.00</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                     <div class="modal-footer modal-footer1">
                         <button type="button" class="btn btn-success btn-yes" data-bs-dismiss="modal">Yes</button>
@@ -238,25 +77,36 @@
         </div>
     </main>
 
-    <div class="modal fade modal2" id="POdelete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="POdeleteLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-danger modal-header2">
-                    <h5 class="modal-title modal-title2" id="POdeleteLabel">Delete Purchase Order</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body modal-body2">
-                    Are you sure you want to delete this P.O Form?
-                </div>
-                <div class="modal-footer modal-footer2">
-                    <button type="button" class="btn btn-outline-danger btn-yes2" data-bs-dismiss="modal">Yes</button>
-                    <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
   <!-- Scripts -->
+
+  <script type='text/javascript'>
+        $(document).ready(function(){
+            $('.PurchaseNO').click(function(){
+                var PONUM= $(this).data('id');
+                $.ajax({
+                    url: 'POForm.php',
+                    type: 'post',
+                    data: {PONUM: PONUM},
+                    success: function(response){ 
+                        $('.modal-body').html(response); 
+                        $('#poForm').modal('show'); 
+                    }
+                });
+            });
+        });
+    </script>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+    </symbol>
+    <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+    </symbol>
+    <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+    </symbol>
+</svg>
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

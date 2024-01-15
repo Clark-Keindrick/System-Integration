@@ -84,7 +84,7 @@
           <div class="card-body">
             <h5 class="card-title">View Deleted P.O Form</h5>
             <p class="card-text">You can still retrieve all the P.O Form that you've been deleted.</p>
-            <a href="#" class="btn btn-danger">P.O history</a>
+            <a href="deletedPOForm.php" class="btn btn-danger">P.O history</a>
           </div>
           <div class="card-footer text-muted">
             2 days ago

@@ -22,9 +22,9 @@
 
 .inv_table{
     height: 120px !important;
-    width: 60% !important;
+    width: 70% !important;
     margin-top: 120px !important;
-    transform: translateX(33%) !important;
+    transform: translateX(21%) !important;
 }
 
 .table{
@@ -215,35 +215,3 @@ h3{
     margin-bottom: 7px !important;
     font-size: 13px !important;
 }
-
-.modal2{
-    transform: translateX(35%) !important;
-  }
-  
-.modal-header2{
-    padding: 10px !important;
-}
-
-.modal-title2{
-    color: white !important;
-    font-weight: 700 !important;
-    font-size: 25px !important;
-}
-
-.modal-body2{
-    padding: 17px !important;
-}
-
-.modal-footer2{
-    padding: 7px !important;
-}
-
-.modal-footer2 button{
-    padding: 5px 25px!important;
-    font-size: 17px !important;
-    font-weight: 600 !important;
-  }
-  
-.btn-yes2{
-    margin-right: 10px !important;
-  }  
